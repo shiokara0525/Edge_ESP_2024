@@ -1,7 +1,6 @@
 #include<Arduino.h>
 #include<BluetoothSerial.h>
 #include <PS4Controller.h>
-#include<Adafruit_NeoPixel.h>
 #include<OLED_a.h>
 
 #define DEF_NUM 3838

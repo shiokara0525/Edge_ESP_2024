@@ -51,6 +51,7 @@ void oled_attack::setup(){
     // Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
+  pixels.begin();
 }
 
 
@@ -1408,6 +1409,17 @@ void oled_attack::display_Ball(){
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 38, 34, 10, WHITE);
   }
+
+  int ball_pos = 0;
+  pixels.clear();
+  ball_pos = (degrees(ball_vec.getAngle()) + 180) / 22.5 - 4;
+  if(ball_pos < 0){
+    ball_pos += 16;
+  }
+  Serial.print(" b_p : ");
+  Serial.print(ball_pos);
+  pixels.setPixelColor(ball_pos,pixels.Color(0,150,0));
+  pixels.show();
 
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)
   //タクトスイッチが押されたら、メニューに戻る

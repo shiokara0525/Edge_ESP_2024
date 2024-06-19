@@ -21,6 +21,7 @@ int recieveData();
 
 int neopixel_flag = 0;
 int D_A,A_A;
+int D_flag,A_flag;
 
 int sendPS4();
 
@@ -89,7 +90,14 @@ void loop() {
     if(neopixel_flag){
       pixels.clear();
       if(D_A == 10){
-        pixels.setPixelColor(4,pixels.Color(100,0,0));
+        if(D_flag == 1){
+          pixels.setPixelColor(4,pixels.Color(100,0,0));
+        }
+        else{
+          for(int i = 0; i < 16; i++){
+            pixels.setPixelColor(i,pixels.Color(100,0,0));
+          }
+        }
       }
       else if(D_A == 12){
         pixels.setPixelColor(4,pixels.Color(100,100,0));
@@ -274,6 +282,7 @@ int recieveData(){
     else if(recieve_byte[1] == 7){
       neopixel_flag = 1;
       D_A = recieve_int[0];
+      D_flag = recieve_int[1];
     }
     Serial.println();
     return 1;

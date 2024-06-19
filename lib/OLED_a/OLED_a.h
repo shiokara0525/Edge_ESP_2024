@@ -9,7 +9,7 @@
 #include<myVector.h>
 
 extern int sendtoTeensy(const char*,int);
-
+extern Adafruit_NeoPixel pixels;
 
 #define NUMPIXELS 16
 #define PIN 32
@@ -38,7 +38,6 @@ extern int sendtoTeensy(const char*,int);
 
 class oled_attack{
     public:
-    Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
     Adafruit_SSD1306 display = Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
     const int bluetooth = 11;
     timer timer_OLED;

@@ -2,12 +2,15 @@
 #include<BluetoothSerial.h>
 #include <PS4Controller.h>
 #include<OLED_a.h>
+#include<timer.h>
 
 #define DEF_NUM 3838
 
 oled_attack OLED;
 BluetoothSerial BTSerial;
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+timer timer_main;
 
 int Mode = 0;
 int Mode_old = 999;
@@ -34,6 +37,8 @@ void setup() {
 }
 
 void loop() {
+  timer_main.reset();
+  neopixel_flag = 0;
   if(7 <= Serial2.available()){
     recieveData();
   }
@@ -44,6 +49,8 @@ void loop() {
       Mode_old = Mode;
       sendtoTeensy("Mode",0);
       OLED.start();
+      pixels.clear();
+      pixels.show();
     }
 
     OLED.OLED();
@@ -64,6 +71,8 @@ void loop() {
     if(Mode != Mode_old){
       Mode_old = Mode;
       sendtoTeensy("Mode",1);
+      pixels.clear();
+      pixels.show();
     }
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;
@@ -73,12 +82,28 @@ void loop() {
     if(Mode != Mode_old){
       Mode_old = Mode;
       sendtoTeensy("Mode",2);
+      pixels.clear();
+      pixels.show();
     }
 
     if(neopixel_flag){
+      pixels.clear();
       if(D_A == 10){
         pixels.setPixelColor(4,pixels.Color(100,0,0));
       }
+      else if(D_A == 12){
+        pixels.setPixelColor(4,pixels.Color(100,100,0));
+      }
+      else if(D_A == 15){
+        pixels.setPixelColor(4,pixels.Color(0,100,0));
+      }
+      else if(D_A == 16){
+        pixels.setPixelColor(4,pixels.Color(0,100,100));
+      }
+      else if(D_A == 20){
+        pixels.setPixelColor(4,pixels.Color(0,0,100));
+      }
+      pixels.show();
     }
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;
@@ -195,6 +220,8 @@ int recieveData(){
     }
     for(int i = 1; i < 7; i++){
       recieve_byte[i] = Serial2.read();
+      Serial.print(" ");
+      Serial.print(recieve_byte[i]);
     }
 
     contain[0] = recieve_byte[2] << 8;
@@ -276,4 +303,5 @@ int sendPS4(){
   if(PS4.Circle()){
     sendtoTeensy("kick",1);
   }
+  return 1;
 }

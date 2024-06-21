@@ -1734,3 +1734,55 @@ void oled_attack::select_testMode(){
     }
   }
 }
+
+
+void oled_attack::OLED_moving(){
+  //OLEDの初期化
+  display.display();
+  display.clearDisplay();
+
+  //テキストサイズと色の設定
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  
+  display.setCursor(0,0);  //1列目
+  display.println("dir_n");  //現在向いてる角度
+  display.setCursor(30,0);
+  display.println(":");
+  display.setCursor(36,0);
+  display.println();    //現在向いてる角度を表示
+
+  display.setCursor(0,10);  //2列目
+  display.println("dir_t");  //この中に変数名を入力
+  display.setCursor(30,10);
+  display.println(":");
+  display.setCursor(36,10);
+  display.println();    //この中に知りたい変数を入力a
+  display.setCursor(0,20); //3列目 
+  display.println("dir");  //この中に変数名を入力
+  display.setCursor(30,20);
+  display.println(":");
+  display.setCursor(36,20);
+  display.println();    //この中に知りたい変数を入力
+
+  display.setCursor(0,30); //4列目
+  display.println("A");  //この中に変数名を入力
+  display.setCursor(30,30);
+  display.println(":");
+  display.setCursor(36,30);
+  display.println();    //この中に知りたい変数を入力
+
+  display.setCursor(0,40); //5列目
+  display.println("M_F");  //この中に変数名を入力
+  display.setCursor(30,40);
+  display.println(":");
+  display.setCursor(36,40);
+  display.println();    //この中に知りたい変数を入力
+
+  display.setCursor(0,50); //6列目
+  display.println("B_c");  //この中に変数名を入力
+  display.setCursor(30,50);
+  display.println(":");
+  display.setCursor(36,50);
+  display.println();    //この中に知りたい変数を入力
+}

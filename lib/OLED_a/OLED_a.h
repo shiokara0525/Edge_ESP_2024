@@ -70,6 +70,8 @@ class oled_attack{
     void Kick_test();
     void select_testMode();
 
+    void OLED_moving();
+
     void check_TactSwitch();
     int Button_selectCF = 0;  //コートの方向を決めるときに特殊なことをするので、セレクト変数を変えときますぜよ
     int Robot_Mode = 0; //デフォルトはアタッカー

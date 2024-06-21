@@ -86,6 +86,8 @@ void loop() {
       pixels.clear();
       pixels.show();
     }
+    OLED.OLED_moving();
+    sendtoTeensy("D_neo",999);
 
     if(neopixel_flag){
       pixels.clear();
@@ -182,6 +184,9 @@ int sendtoTeensy(const char *message,int val){
   }
   else if(message == "CHECK"){
     flag = 12;
+  }
+  else if(message == "D_neo"){
+    flag = 13;
   }
 
   // Serial.print(" message : ");

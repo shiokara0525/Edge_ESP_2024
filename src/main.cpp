@@ -95,10 +95,15 @@ void loop() {
         if(D_flag == 1){
           pixels.setPixelColor(4,pixels.Color(100,0,0));
         }
-        else{
+        else if(D_flag == 0){
           for(int i = 0; i < 16; i++){
             pixels.setPixelColor(i,pixels.Color(100,0,0));
           }
+        }
+        else if(D_flag == 2){
+          for(int i = 0; i < 16; i++){
+            pixels.setPixelColor(i,pixels.Color(100,50,0));
+          }          
         }
       }
       else if(D_A == 12){

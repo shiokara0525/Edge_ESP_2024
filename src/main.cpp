@@ -137,8 +137,7 @@ void loop() {
       Mode_old = Mode;
       sendtoTeensy("Mode",99);
     }
-    OLED.first_select();
-    if(digitalRead(OLED.Tact_Switch[1]) == LOW){
+    if(OLED.first_select()){
       Mode = 0;
     }
   }

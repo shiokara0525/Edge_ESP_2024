@@ -60,13 +60,7 @@ int oled_attack::first_select(){
   check_TactSwitch();
   select_Mode();
   if(Sentor){
-    address = 0x00;
-    address += sizeof(LINE_level) + sizeof(RA_size) + sizeof(val_max) + sizeof(Button_selectCF);  //アドレスを次の変数のアドレスにする
-    for(int i = 0; i < 6; i++){
-      address += sizeof(check_val[i]);
-    }
-    address += sizeof(ball_getth);
-    EEPROM.put(address,Robot_Mode);
+    EEPROM.put(addresses[EEPROM_MODE],Robot_Mode);
     EEPROM.commit();
     return 1;
   }

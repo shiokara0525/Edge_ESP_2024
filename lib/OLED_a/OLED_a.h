@@ -60,6 +60,9 @@ class oled_attack{
     void display_main();
     void display_start();
     void select_Mode();
+
+    void select_Option();
+
     void display_selectColor();
     void display_waitStart();
     void set_Line_Threshold();
@@ -107,6 +110,9 @@ class oled_attack{
 
     int testMode = 0;
 
+    int option_flag = 0;
+    int option_on[3] = {0,0,0};
+
     const int Tact_Switch[3] = {18,35,19};
     const int Toggle_Switch = 34;  //スイッチのピン番号
 
@@ -123,6 +129,7 @@ class oled_attack{
     int state;
 
     int line_on = 0;
+    int line_on_all[24];
     int ball_on = 0;
 
     int cam_on = 0;

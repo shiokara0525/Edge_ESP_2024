@@ -354,6 +354,21 @@ int recieveData(){
       }
       OLED.cam_back_vec.print();
     }
+    else if(recieve_byte[1] == 9){
+      for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 8; j++){
+          OLED.line_on_all[i * 8 + j] = recieve_byte[i + 2] % 2;
+          recieve_byte[i + 2] /= 2;
+          if(i == 3 && 2 <= j){
+            break;
+          }
+        }
+      }
+      for(int i = 0; i < 24; i++){
+        Serial.print(" ");
+        Serial.print(OLED.line_on_all[i]);
+      }
+    }
     Serial.println();
     return 1;
     break;

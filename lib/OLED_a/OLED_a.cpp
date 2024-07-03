@@ -213,14 +213,46 @@ void oled_attack::OLED() {
         sendtoTeensy("ac_reset",1);  //姿勢制御の値リセットするぜい
       }
       else if(Button_select == 2){
-        Mnone_flag = 1;  //モーター動作なしバージョンのフラグを立てる
-        sendtoTeensy("Mnone_flag",1);
+        A = 16;
       }
     }
     if(digitalRead(Toggle_Switch) != toogle){
       toogle = digitalRead(Toggle_Switch);
       display.clearDisplay(); //初期化してI2Cバスを解放する
       end();
+    }
+  }
+  else if(A == 16){
+    if(A != B){
+      Button_select = 0;
+      B = A;
+    }
+
+    display.display();
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setCursor(25,30);
+    if(option_flag == 0){
+      display.println("NoneMotar");
+    }
+    else if(option_flag == 1){
+      display.println("printany");
+    }
+    else if(option_flag == 2){
+      display.println("LINE");
+    }
+
+    if(Right){
+      option_flag++;
+      if(option_flag > 2){
+        option_flag = 0;
+      }
+    }
+    else if(Left){
+      option_flag--;
+      if(option_flag < 0){
+        option_flag = 1;
+      }
     }
   }
   else if(A == 20){
@@ -1289,6 +1321,21 @@ void oled_attack::display_Line(){
   }
   else{  //ラインがロボットの下にない
     display.fillRect(96, 39, 34, 10, WHITE);
+  }
+
+  if(line_on){
+    pixels.clear();
+    for(int i = 0; i < 8; i++){
+      for(int j = 0; j < 3; j++){
+        int number = i * 3 + j;
+        if(line_on_all[number]){
+          pixels.setPixelColor(2 * i,pixels.Color(0,100,0));
+          pixels.setPixelColor(2 * i + 1,pixels.Color(0,100,0));
+          break;
+        }
+      }
+    }
+    pixels.show();
   }
 
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)

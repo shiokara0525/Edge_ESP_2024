@@ -239,14 +239,13 @@ int recieveData(){
   word contain[4];
   while(7 <= Serial2.available()){
     recieve_byte[0] = Serial2.read();
-    Serial.print(" recieve_byte : ");
     if(recieve_byte[0] != 38){
       continue;
     }
     for(int i = 1; i < 7; i++){
       recieve_byte[i] = Serial2.read();
-      Serial.print(" ");
-      Serial.print(recieve_byte[i]);
+      // Serial.print(" ");
+      // Serial.print(recieve_byte[i]);
     }
 
     contain[0] = recieve_byte[2] << 8;
@@ -261,6 +260,8 @@ int recieveData(){
     //   Serial.print(" ");
     //   Serial.print(recieve_byte[i]);
     // }
+    Serial.print(" byte : ");
+    Serial.print(recieve_byte[1]);
     Serial.print(" 0 : ");
     Serial.print(recieve_int[0]);
     Serial.print(" 1 : ");
@@ -284,8 +285,13 @@ int recieveData(){
       OLED.line_vec.print();
     }
     else if(recieve_byte[1] == 4){
-      OLED.cam_vec.setX(recieve_int[0]);
-      OLED.cam_vec.setY(recieve_int[1]);
+      if(recieve_int[1] == 0){
+        OLED.cam_on = 0;
+      }
+      else{
+        OLED.cam_on = 1;
+        OLED.cam_vec.setPolarCoordinates(radians(recieve_int[0]),recieve_int[1]);
+      }
     }
     else if(recieve_byte[1] == 5){
       OLED.ac_dir = recieve_int[0];
@@ -301,6 +307,16 @@ int recieveData(){
       D_v = recieve_byte[2];
       D_flag = recieve_byte[3];
       D_A = recieve_byte[4];
+    }
+    else if(recieve_byte[1] == 8){
+      if(recieve_int[1] == 0){
+        OLED.cam_back_on = 0;
+      }
+      else{
+        OLED.cam_back_on = 1;
+        OLED.cam_back_vec.setPolarCoordinates(radians(recieve_int[0]),recieve_int[1]);
+      }
+      OLED.cam_back_vec.print();
     }
     Serial.println();
     return 1;

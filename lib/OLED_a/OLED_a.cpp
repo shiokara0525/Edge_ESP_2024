@@ -180,13 +180,13 @@ void oled_attack::OLED() {
     display_selectColor();
     if(Sentor){  //タクトスイッチが手から離れたら
       if(Button_selectCF == 0){
-        goal_color = 1;  //YELLOW
-        sendtoTeensy("color",1);
+        goal_color = YELLOW;
+        sendtoTeensy("color",YELLOW);
         A = 15;  //スタート画面に行く
       }
       else if(Button_selectCF == 2){
-        goal_color = 0;  //YELLOW
-        sendtoTeensy("color",0);
+        goal_color = BLUE;
+        sendtoTeensy("color",BLUE);
         A = 15;  //スタート画面に行く
       }
       else if(Button_selectCF == 1){
@@ -1598,7 +1598,7 @@ void oled_attack::display_Cam(){
   display.println("Dir:");
   if(cam_on){  //ボールがあれば値を表示
     display.setCursor(96,24);
-    display.println(int(cam_vec.getAngle()));
+    display.println(int(degrees(cam_vec.getAngle())));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 24, 34, 10, WHITE);
@@ -1615,6 +1615,40 @@ void oled_attack::display_Cam(){
     display.fillRect(96, 38, 34, 10, WHITE);
   }
 
+
+  pixels.clear();
+  if(cam_on){
+    int ball_pos = 0;
+    ball_pos = (degrees(cam_vec.getAngle()) + 180) / 22.5 - 4;
+    if(ball_pos < 0){
+      ball_pos += 16;
+    }
+    Serial.print(" b_p : ");
+    Serial.print(ball_pos);
+    if(goal_color == BLUE){
+      pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+    }
+    else if(goal_color == YELLOW){
+      pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+    }
+  }
+  if(cam_back_on){
+    int ball_pos = 0;
+    ball_pos = -(degrees(cam_back_vec.getAngle())) / 22.5 + 12;
+    if(ball_pos < 0){
+      ball_pos += 16;
+    }
+    Serial.print(" b_p : ");
+    Serial.print(ball_pos);
+    if(goal_color == BLUE){
+      pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+    }
+    else if(goal_color == YELLOW){
+      pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+    }
+  }
+
+  pixels.show();
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)
   //タクトスイッチが押されたら、メニューに戻る
 }

@@ -36,6 +36,9 @@ extern Adafruit_NeoPixel pixels;
 #define EEPROM_BALL 10
 #define EEPROM_MODE 11
 
+#define BLUE 0
+#define YELLOW 1
+
 class oled_attack{
     public:
     Adafruit_SSD1306 display = Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -121,11 +124,15 @@ class oled_attack{
 
     int line_on = 0;
     int ball_on = 0;
+
     int cam_on = 0;
+    int cam_back_on = 0;
+
 
     Vector2D line_vec;
     Vector2D ball_vec;
     Vector2D cam_vec;
+    Vector2D cam_back_vec;
     int ac_dir;
 
     int A_D = 1;

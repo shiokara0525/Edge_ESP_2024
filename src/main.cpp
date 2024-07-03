@@ -76,6 +76,42 @@ void loop() {
       pixels.clear();
       pixels.show();
     }
+    sendtoTeensy("state",80);
+
+    pixels.clear();
+    if(OLED.cam_on){
+      int ball_pos = 0;
+      ball_pos = (degrees(OLED.cam_vec.getAngle()) + 180) / 22.5 - 4;
+      if(ball_pos < 0){
+        ball_pos += 16;
+      }
+      Serial.print(" b_p : ");
+      Serial.print(ball_pos);
+      if(OLED.goal_color == BLUE){
+        pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+      }
+      else if(OLED.goal_color == YELLOW){
+        pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+      }
+    }
+    if(OLED.cam_back_on){
+      int ball_pos = 0;
+      ball_pos = -(degrees(OLED.cam_back_vec.getAngle())) / 22.5 + 12;
+      if(ball_pos < 0){
+        ball_pos += 16;
+      }
+      Serial.print(" b_p : ");
+      Serial.print(ball_pos);
+      if(OLED.goal_color == BLUE){
+        pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+      }
+      else if(OLED.goal_color == YELLOW){
+        pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+      }
+    }
+
+    pixels.show();
+
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;
     }

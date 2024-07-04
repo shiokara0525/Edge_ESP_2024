@@ -1795,17 +1795,20 @@ void oled_attack::select_testMode(){
   else if(testMode == 2){
     display.println("Control");
   }
+  else if(testMode == 3){
+    display.println(" PID ");
+  }
 
   if(Right){
     testMode++;
-    if(testMode > 2){
+    if(testMode > 3){
       testMode = 0;
     }
   }
   else if(Left){
     testMode--;
     if(testMode < 0){
-      testMode = 1;
+      testMode = 3;
     }
   }
 }

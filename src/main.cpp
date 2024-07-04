@@ -64,7 +64,8 @@ void loop() {
       else if(OLED.Robot_Mode == 1){
         Mode = 2;
       }
-      else if(OLED.Robot_Mode == 2){
+
+      if(OLED.test_flag){
         Mode = 3;
       }
     }
@@ -168,6 +169,16 @@ void loop() {
       Mode = 0;
     }
   }
+  else if(Mode == 3){
+    if(Mode != Mode_old){
+      Mode_old = Mode;
+      sendtoTeensy("Mode",3);
+      sendtoTeensy("TEST",OLED.testMode);
+    }
+    if(digitalRead(OLED.Tact_Switch[1]) == LOW){
+      Mode = 0;
+    }
+  }
   else if(Mode == 99){
     if(Mode != Mode_old){
       Mode_old = Mode;
@@ -177,6 +188,9 @@ void loop() {
       Mode = 0;
     }
   }
+
+  Serial.print(" Mode : ");
+  Serial.print(Mode);
 
   if (PS4.isConnected()) {
     sendPS4();
@@ -235,6 +249,10 @@ int sendtoTeensy(const char *message,int val){
   }
   else if(message == "D_neo"){
     flag = 13;
+  }
+  else if(message == "TEST"){
+    flag = 14;
+    send = OLED.testMode;
   }
 
   // Serial.print(" message : ");
@@ -296,12 +314,12 @@ int recieveData(){
     //   Serial.print(" ");
     //   Serial.print(recieve_byte[i]);
     // }
-    Serial.print(" byte : ");
-    Serial.print(recieve_byte[1]);
-    Serial.print(" 0 : ");
-    Serial.print(recieve_int[0]);
-    Serial.print(" 1 : ");
-    Serial.print(recieve_int[1]);
+    // Serial.print(" byte : ");
+    // Serial.print(recieve_byte[1]);
+    // Serial.print(" 0 : ");
+    // Serial.print(recieve_int[0]);
+    // Serial.print(" 1 : ");
+    // Serial.print(recieve_int[1]);
 
     if(recieve_byte[1] == 1){
       sendtoTeensy("Mode",DEF_NUM);
@@ -318,7 +336,7 @@ int recieveData(){
     else if(recieve_byte[1] == 3){
       OLED.line_vec.setX(recieve_int[0] * 0.01);
       OLED.line_vec.setY(recieve_int[1] * 0.01);
-      OLED.line_vec.print();
+      // OLED.line_vec.print();
     }
     else if(recieve_byte[1] == 4){
       if(recieve_int[1] == 0){
@@ -352,7 +370,7 @@ int recieveData(){
         OLED.cam_back_on = 1;
         OLED.cam_back_vec.setPolarCoordinates(radians(recieve_int[0]),recieve_int[1]);
       }
-      OLED.cam_back_vec.print();
+      // OLED.cam_back_vec.print();
     }
     else if(recieve_byte[1] == 9){
       for(int i = 0; i < 4; i++){
@@ -364,10 +382,10 @@ int recieveData(){
           }
         }
       }
-      for(int i = 0; i < 24; i++){
-        Serial.print(" ");
-        Serial.print(OLED.line_on_all[i]);
-      }
+      // for(int i = 0; i < 24; i++){
+      //   Serial.print(" ");
+      //   Serial.print(OLED.line_on_all[i]);
+      // }
     }
     Serial.println();
     return 1;

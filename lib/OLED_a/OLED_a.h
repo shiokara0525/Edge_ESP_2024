@@ -129,6 +129,8 @@ class oled_attack{
 
     int setplay_flag = 0;
 
+    int ball_catch_val = 0;
+
     int state;
 
     int line_on = 0;

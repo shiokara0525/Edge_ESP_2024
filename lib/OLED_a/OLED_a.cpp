@@ -370,6 +370,7 @@ void oled_attack::OLED() {
       B = A;
     }
     display_getBall();
+    sendtoTeensy("state",90);
     if(Sentor){
       A = 0;
     }
@@ -418,7 +419,6 @@ void oled_attack::OLED() {
       end();
     }
   }
-  state = A;
 }
 
 
@@ -1740,12 +1740,12 @@ void oled_attack::display_getBall(){
   display.setTextColor(WHITE);
 
   display.setCursor(0,0);  //1列目
-  display.println("Left");  //この中に変数名を入力
+  display.println("get");  //この中に変数名を入力
   display.setCursor(60,0);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
   display.setCursor(66,0);
-  display.println();    //この中に知りたい変数を入力
+  display.println(ball_catch_val);    //この中に知りたい変数を入力
 
 
   display.setCursor(0,10);  //2列目

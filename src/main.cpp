@@ -395,6 +395,9 @@ int recieveData(){
       //   Serial.print(OLED.line_on_all[i]);
       // }
     }
+    else if(recieve_byte[1] == 10){
+      OLED.ball_catch_val = recieve_int[0];
+    }
     Serial.println();
     return 1;
     break;

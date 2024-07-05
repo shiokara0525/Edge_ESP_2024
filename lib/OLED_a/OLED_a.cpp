@@ -215,6 +215,14 @@ void oled_attack::OLED() {
       else if(Button_select == 2){
         A = 16;
       }
+      else if(Button_select == 3){
+        if(setplay_flag){
+          setplay_flag = 0;
+        }
+        else{
+          setplay_flag = 1;
+        }
+      }
     }
     if(digitalRead(Toggle_Switch) != toogle){
       toogle = digitalRead(Toggle_Switch);
@@ -1088,10 +1096,7 @@ void oled_attack::display_waitStart(){
   display.display();
   display.clearDisplay();
 
-  display.setTextSize(3);
   display.setTextColor(WHITE);
-  display.setCursor(22,0);
-  display.println("START");
 
   display.setTextSize(1);
   display.setCursor(38,35);
@@ -1141,16 +1146,40 @@ void oled_attack::display_waitStart(){
   display.setCursor(92,55);
   display.println("NoneM");
 
+  display.setTextColor(WHITE);
+  display.setTextSize(3);
+  if(Button_select == 3){
+    if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
+      display.setTextColor(BLACK, WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+
+    if(setplay_flag){
+      display.setTextColor(BLACK,WHITE);
+    }
+  }
+
+  display.setCursor(22,0);
+  display.println("START");
+
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)
 
   if(Right == 1){
-    if(Button_select < 2){
+    if(Button_select < 3){
       Button_select++;  //next
+    }
+    else{
+      Button_select = 0;
     }
   }
   else if(Left== 1){
     if(Button_select  > 0){
       Button_select--;  //next
+    }
+    else{
+      Button_select = 3;
     }
   }
 }
@@ -1811,6 +1840,11 @@ void oled_attack::select_testMode(){
       testMode = 3;
     }
   }
+}
+
+
+void oled_attack::display_option(){
+  
 }
 
 

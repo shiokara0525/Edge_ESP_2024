@@ -75,6 +75,7 @@ class oled_attack{
     void display_getBall();
     void Kick_test();
     void select_testMode();
+    void display_option();
 
     void OLED_moving();
 
@@ -125,6 +126,8 @@ class oled_attack{
     int Mnone_flag = 0;
     int ac_reset = 0;
     int kick_flag = 0;
+
+    int setplay_flag = 0;
 
     int state;
 

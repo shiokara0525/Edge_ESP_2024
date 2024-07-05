@@ -201,6 +201,7 @@ void loop() {
 int sendtoTeensy(const char *message,int val){
   int send;
   int flag = 0;
+  byte send_2[2];
 
   if(message == "Mode"){
     send = Mode;
@@ -254,6 +255,10 @@ int sendtoTeensy(const char *message,int val){
     flag = 14;
     send = OLED.testMode;
   }
+  else if(message == "OPTION"){
+    flag = 15;
+    send = OLED.setplay_flag;
+  }
 
   // Serial.print(" message : ");
   // Serial.print(message);
@@ -272,6 +277,9 @@ int sendtoTeensy(const char *message,int val){
     send_byte[2] = byte( send >> 8 ); //ビットシフトで上位側の８Bitを取り出し、バイト型に型変換をする。
     send_byte[3] = byte( send & 0xFF ); //論理和で下位側の８Bitを取り出し、バイト型に型変換をする。
     Serial2.write(send_byte,5);
+  }
+  else if(flag == 15){
+    
   }
   else{
     for(int i = 0; i < 6; i++){

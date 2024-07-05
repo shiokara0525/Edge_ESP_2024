@@ -78,6 +78,7 @@ void loop() {
       pixels.show();
     }
     sendtoTeensy("state",80);
+    OLED.OLED_moving();
 
     pixels.clear();
     if(OLED.cam_on){

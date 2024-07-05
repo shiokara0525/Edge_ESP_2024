@@ -36,7 +36,7 @@ void oled_attack::setup(){
 
   address += sizeof(ball_getth);
   EEPROM.get(address,Robot_Mode);
-  sendtoTeensy("Mode",Robot_Mode);
+  // sendtoTeensy("Mode",Robot_Mode);
   addresses[EEPROM_MODE] = address;
 
   EEPROM.commit();
@@ -1844,7 +1844,7 @@ void oled_attack::select_testMode(){
 
 
 void oled_attack::display_option(){
-  
+
 }
 
 

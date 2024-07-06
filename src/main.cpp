@@ -269,7 +269,7 @@ int sendtoTeensy(const char *message,int val){
     send = val;
   }
 
-  if(flag != 12){
+  if(flag != 100){
     uint8_t send_byte[5] = {38,0,0,0,37};
     send_byte[1] = flag;
     send_byte[2] = byte( send >> 8 ); //ビットシフトで上位側の８Bitを取り出し、バイト型に型変換をする。
@@ -277,7 +277,8 @@ int sendtoTeensy(const char *message,int val){
     Serial2.write(send_byte,5);
   }
   else if(flag == 15){
-    
+    uint8_t send_byte[5] = {38,0,0,0,37};
+    Serial2.write(send_byte,5);
   }
   else{
     for(int i = 0; i < 6; i++){

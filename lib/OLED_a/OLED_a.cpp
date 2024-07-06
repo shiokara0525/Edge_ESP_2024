@@ -346,6 +346,13 @@ void oled_attack::OLED() {
         else{
           check_flag = 1;
         }
+
+        for(int i = 0; i < 6; i++){
+          EEPROM.put(addresses[EEPROM_CHECK + i],check_val[i]);  //EEPROMにボールの閾値を保存
+          Serial.printf(" check_val[%d] : %d ",i,check_val[i]);
+        }
+        EEPROM.commit();
+        Serial.println();
         sendtoTeensy("CHECK",DEF_NUM);
       }
       else{
@@ -1515,7 +1522,7 @@ void oled_attack::set_Avaliable(){
     }
   }
   display.setCursor(0,0);  //1列目
-  display.println("goAng_10");  //この中に変数名を入力
+  display.println("RA_A");  //この中に変数名を入力
   display.setCursor(60,0);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1532,7 +1539,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,10);  //2列目
-  display.println("goAng_45");  //この中に変数名を入力
+  display.println("RA_B");  //この中に変数名を入力
   display.setCursor(60,10);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1549,7 +1556,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,20); //3列目
-  display.println("goAng_90");  //この中に変数名を入力
+  display.println("C");  //この中に変数名を入力
   display.setCursor(60,20);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1566,7 +1573,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,30); //4列目
-  display.println("goAng_180");  //この中に変数名を入力
+  display.println("D");  //この中に変数名を入力
   display.setCursor(60,30);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1583,7 +1590,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,40); //5列目
-  display.println("conf");  //この中に変数名を入力
+  display.println("E");  //この中に変数名を入力
   display.setCursor(60,40);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1600,7 +1607,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,50); //6列目
-  display.println("C");  //この中に変数名を入力
+  display.println("F");  //この中に変数名を入力
   display.setCursor(60,50);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力

@@ -190,9 +190,6 @@ void loop() {
     }
   }
 
-  Serial.print(" Mode : ");
-  Serial.print(Mode);
-
   if (PS4.isConnected()) {
     sendPS4();
   }
@@ -247,7 +244,7 @@ int sendtoTeensy(const char *message,int val){
     flag = 11;
   }
   else if(message == "CHECK"){
-    flag = 12;
+    flag = 100;
   }
   else if(message == "D_neo"){
     flag = 13;

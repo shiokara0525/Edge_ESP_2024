@@ -155,6 +155,9 @@ void loop() {
       else if(D_A == 12){
         pixels.setPixelColor(4,pixels.Color(100,100,0));
       }
+      else if(D_A == 13){
+        pixels.setPixelColor(4,pixels.Color(100,0,100));
+      }
       else if(D_A == 15){
         pixels.setPixelColor(4,pixels.Color(0,100,0));
       }

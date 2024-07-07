@@ -39,6 +39,11 @@ void oled_attack::setup(){
   // sendtoTeensy("Mode",Robot_Mode);
   addresses[EEPROM_MODE] = address;
 
+  if(Robot_Mode == -1){
+    for(int i = 0; i < EEPROM_SIZE; i++){
+      EEPROM.put(addresses[i],0);
+    }
+  }
   EEPROM.commit();
 
   for(int i = 0; i < 3; i++){

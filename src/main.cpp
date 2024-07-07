@@ -214,7 +214,7 @@ int sendtoTeensy(const char *message,int val){
     flag = 3;
   }
   else if(message == "color"){
-    send = OLED.color;
+    send = OLED.goal_color;
     flag = 4;
   }
   else if(message == "ball_th"){

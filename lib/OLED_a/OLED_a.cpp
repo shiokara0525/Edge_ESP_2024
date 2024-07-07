@@ -1664,7 +1664,7 @@ void oled_attack::display_Cam(){
     display.fillCircle((OLED_cam_x + 2), (62 - OLED_cam_y), 5, WHITE);
   }
   Serial.print(" color : ");
-  Serial.print(color);
+  Serial.print(goal_color);
 
   //"Ball"と表示する
   display.setTextSize(2);

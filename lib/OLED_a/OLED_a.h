@@ -119,7 +119,6 @@ class oled_attack{
 
     int RA_size;
     int val_max = 200;
-    int color;
     int LINE_level = 50;
     int ball_getth = 100;
     int goal_color = 0;
@@ -147,7 +146,6 @@ class oled_attack{
     Vector2D cam_back_vec;
     int ac_dir;
 
-    int A_D = 1;
     int addresses[EEPROM_SIZE];
 };
 /*------------------------------------------------------------------------------------------------------------*/

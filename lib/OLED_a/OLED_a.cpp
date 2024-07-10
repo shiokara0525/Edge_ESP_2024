@@ -1364,14 +1364,20 @@ void oled_attack::display_Line(){
     display.fillRect(96, 39, 34, 10, WHITE);
   }
 
+  display.setCursor(68,53);
+  display.println("sub:");
+  display.setCursor(96,53);
+  display.println(line_side_flag);
+
   if(line_on){
     pixels.clear();
     for(int i = 0; i < 8; i++){
       for(int j = 0; j < 3; j++){
         int number = i * 3 + j;
         if(line_on_all[number]){
-          pixels.setPixelColor(2 * i,pixels.Color(0,100,0));
-          pixels.setPixelColor(2 * i + 1,pixels.Color(0,100,0));
+          pixels.setPixelColor(i * 2 - 4,pixels.Color(0,100,0));
+          pixels.setPixelColor(i * 2 - 3,pixels.Color(0,100,0));
+          Serial.printf(" !!! %d",number);
           break;
         }
       }

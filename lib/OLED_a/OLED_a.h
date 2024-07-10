@@ -133,7 +133,8 @@ class oled_attack{
     int state;
 
     int line_on = 0;
-    int line_on_all[24];
+    int line_on_all[27];
+    int line_side_flag;
     int ball_on = 0;
 
     int cam_on = 0;

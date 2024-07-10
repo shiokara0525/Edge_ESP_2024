@@ -383,24 +383,47 @@ int recieveData(){
       // OLED.cam_back_vec.print();
     }
     else if(recieve_byte[1] == 9){
+      OLED.line_on = 1;
       for(int i = 0; i < 4; i++){
         for(int j = 0; j < 8; j++){
           OLED.line_on_all[i * 8 + j] = recieve_byte[i + 2] % 2;
           recieve_byte[i + 2] /= 2;
+          if(OLED.line_on_all[i] != 0){
+            OLED.line_on_all[i] = 1;
+          }
           if(i == 3 && 2 <= j){
             break;
           }
         }
       }
-      // for(int i = 0; i < 24; i++){
+      // for(int i = 0; i < 27; i++){
       //   Serial.print(" ");
       //   Serial.print(OLED.line_on_all[i]);
       // }
+      if(OLED.line_on_all[24] == 1 && OLED.line_on_all[25] == 0){
+        OLED.line_side_flag = 1;
+      }
+      else if(OLED.line_on_all[24] == 0 && OLED.line_on_all[25] == 1){
+        OLED.line_side_flag = 2;
+      }
+      else if(OLED.line_on_all[24] == 1 && OLED.line_on_all[25] == 1 && OLED.line_on_all[26] == 0){
+        OLED.line_side_flag = 3;
+      }
+      else if(OLED.line_on_all[26] == 1 && OLED.line_on_all[25] == 0 && OLED.line_on_all[24] == 0){
+        OLED.line_side_flag = 4;
+      }
+      else if(OLED.line_on_all[24] == 1 && OLED.line_on_all[25] == 1 && OLED.line_on_all[26] == 1){
+        OLED.line_side_flag = 4;
+      }
+      else{
+        OLED.line_side_flag = 0;
+      }
+      Serial.println();
     }
     else if(recieve_byte[1] == 10){
       OLED.ball_catch_val = recieve_int[0];
     }
-    Serial.println();
+    // Serial.println();
     return 1;
     break;
   }

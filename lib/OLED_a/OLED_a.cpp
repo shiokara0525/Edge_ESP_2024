@@ -1375,8 +1375,14 @@ void oled_attack::display_Line(){
       for(int j = 0; j < 3; j++){
         int number = i * 3 + j;
         if(line_on_all[number]){
-          pixels.setPixelColor(i * 2 - 4,pixels.Color(0,100,0));
-          pixels.setPixelColor(i * 2 - 3,pixels.Color(0,100,0));
+          int num_neo[2] = {i * 2 - 4,i * 2 - 3};
+          for(int i = 0; i < 2; i++){
+            if(num_neo[i] < 0){
+              num_neo[i] += 16;
+            }
+          }
+          pixels.setPixelColor(num_neo[0],pixels.Color(0,100,0));
+          pixels.setPixelColor(num_neo[1],pixels.Color(0,100,0));
           Serial.printf(" !!! %d",number);
           break;
         }

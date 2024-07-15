@@ -35,6 +35,9 @@ extern Adafruit_NeoPixel pixels;
 #define EEPROM_CHECK 4
 #define EEPROM_BALL 10
 #define EEPROM_MODE 11
+#define EEPROM_OPTION 12
+
+#define OPTION_NUM 4
 
 #define BLUE 0
 #define YELLOW 1
@@ -113,7 +116,7 @@ class oled_attack{
     int testMode = 0;
 
     int option_flag = 0;
-    int option_on[3] = {0,0,0};
+    uint8_t option_on[OPTION_NUM] = {0,0,0,0};
 
     const int Tact_Switch[3] = {18,35,19};
     const int Toggle_Switch = 34;  //スイッチのピン番号

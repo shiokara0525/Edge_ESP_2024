@@ -81,52 +81,54 @@ void loop() {
     OLED.OLED_moving();
 
     pixels.clear();
-    if(A_A == 10){
-      pixels.setPixelColor(4,pixels.Color(0,0,200));
-    }
-    else if(A_A == 12){
-      pixels.setPixelColor(4,pixels.Color(0,200,0));
-    }
-    else if(A_A == 20){
-      pixels.setPixelColor(4,pixels.Color(200,0,0));
-    }
-    else if(A_A == 21){
-      pixels.setPixelColor(4,pixels.Color(200,200,0));
-    }
-    else if(A_A == 22){
-      pixels.setPixelColor(4,pixels.Color(0,200,200));
-    }
-    else if(A_A == 23){
-      pixels.setPixelColor(4,pixels.Color(200,0,200));
-    }
-    if(OLED.cam_on){
-      int ball_pos = 0;
-      ball_pos = (degrees(OLED.cam_vec.getAngle()) + 180) / 22.5 - 4;
-      if(ball_pos < 0){
-        ball_pos += 16;
+    if(OLED.option_on[3]){
+      if(A_A == 10){
+        pixels.setPixelColor(4,pixels.Color(0,0,200));
       }
-      Serial.print(" b_p : ");
-      Serial.print(ball_pos);
-      if(OLED.goal_color == BLUE){
-        pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+      else if(A_A == 12){
+        pixels.setPixelColor(4,pixels.Color(0,200,0));
       }
-      else if(OLED.goal_color == YELLOW){
-        pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+      else if(A_A == 20){
+        pixels.setPixelColor(4,pixels.Color(200,0,0));
       }
-    }
-    if(OLED.cam_back_on){
-      int ball_pos = 0;
-      ball_pos = -(degrees(OLED.cam_back_vec.getAngle())) / 22.5 + 12;
-      if(ball_pos < 0){
-        ball_pos += 16;
+      else if(A_A == 21){
+        pixels.setPixelColor(4,pixels.Color(200,200,0));
       }
-      Serial.print(" b_p : ");
-      Serial.print(ball_pos);
-      if(OLED.goal_color == BLUE){
-        pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+      else if(A_A == 22){
+        pixels.setPixelColor(4,pixels.Color(0,200,200));
       }
-      else if(OLED.goal_color == YELLOW){
-        pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+      else if(A_A == 23){
+        pixels.setPixelColor(4,pixels.Color(200,0,200));
+      }
+      if(OLED.cam_on){
+        int ball_pos = 0;
+        ball_pos = (degrees(OLED.cam_vec.getAngle()) + 180) / 22.5 - 4;
+        if(ball_pos < 0){
+          ball_pos += 16;
+        }
+        Serial.print(" b_p : ");
+        Serial.print(ball_pos);
+        if(OLED.goal_color == BLUE){
+          pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+        }
+        else if(OLED.goal_color == YELLOW){
+          pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+        }
+      }
+      if(OLED.cam_back_on){
+        int ball_pos = 0;
+        ball_pos = -(degrees(OLED.cam_back_vec.getAngle())) / 22.5 + 12;
+        if(ball_pos < 0){
+          ball_pos += 16;
+        }
+        Serial.print(" b_p : ");
+        Serial.print(ball_pos);
+        if(OLED.goal_color == BLUE){
+          pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
+        }
+        else if(OLED.goal_color == YELLOW){
+          pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+        }
       }
     }
 
@@ -145,47 +147,48 @@ void loop() {
     }
     OLED.OLED_moving();
     sendtoTeensy("D_neo",999);
-
-    if(neopixel_flag){
-      pixels.clear();
-      if(D_A == 10){
-        for(int i = 0; i < 15; i++){
-          if(D_v < 5 * i){
-            if(D_flag == 0){
-              for(int j = 0; j <= i; j++){
-                pixels.setPixelColor(j,pixels.Color(100,0,0));
+    if(OLED.option_on[3]){
+      if(neopixel_flag){
+        pixels.clear();
+        if(D_A == 10){
+          for(int i = 0; i < 15; i++){
+            if(D_v < 5 * i){
+              if(D_flag == 0){
+                for(int j = 0; j <= i; j++){
+                  pixels.setPixelColor(j,pixels.Color(100,0,0));
+                }
               }
-            }
-            else if(D_flag == 1){
-              for(int j = 0; j <= i; j++){
-                pixels.setPixelColor(j,pixels.Color(100,100,0));
+              else if(D_flag == 1){
+                for(int j = 0; j <= i; j++){
+                  pixels.setPixelColor(j,pixels.Color(100,100,0));
+                }
               }
-            }
-            else if(D_flag == 2){
-              for(int j = 0; j <= i; j++){
-                pixels.setPixelColor(j,pixels.Color(100,0,100));
+              else if(D_flag == 2){
+                for(int j = 0; j <= i; j++){
+                  pixels.setPixelColor(j,pixels.Color(100,0,100));
+                }
               }
+              break;
             }
-            break;
           }
         }
+        else if(D_A == 12){
+          pixels.setPixelColor(4,pixels.Color(100,100,0));
+        }
+        else if(D_A == 13){
+          pixels.setPixelColor(4,pixels.Color(100,0,100));
+        }
+        else if(D_A == 15){
+          pixels.setPixelColor(4,pixels.Color(0,100,0));
+        }
+        else if(D_A == 16){
+          pixels.setPixelColor(4,pixels.Color(0,100,100));
+        }
+        else if(D_A == 20){
+          pixels.setPixelColor(4,pixels.Color(0,0,100));
+        }
+        pixels.show();
       }
-      else if(D_A == 12){
-        pixels.setPixelColor(4,pixels.Color(100,100,0));
-      }
-      else if(D_A == 13){
-        pixels.setPixelColor(4,pixels.Color(100,0,100));
-      }
-      else if(D_A == 15){
-        pixels.setPixelColor(4,pixels.Color(0,100,0));
-      }
-      else if(D_A == 16){
-        pixels.setPixelColor(4,pixels.Color(0,100,100));
-      }
-      else if(D_A == 20){
-        pixels.setPixelColor(4,pixels.Color(0,0,100));
-      }
-      pixels.show();
     }
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;

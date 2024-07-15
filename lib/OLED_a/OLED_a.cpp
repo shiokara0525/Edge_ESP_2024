@@ -1,7 +1,7 @@
 #include<OLED_a.h>
 
 void oled_attack::setup(){
-  EEPROM.begin(0xFF);
+  EEPROM.begin(512);
 
   address = 0;
   EEPROM.get(address,LINE_level);//EEPROMから読み出し
@@ -38,6 +38,15 @@ void oled_attack::setup(){
   EEPROM.get(address,Robot_Mode);
   // sendtoTeensy("Mode",Robot_Mode);
   addresses[EEPROM_MODE] = address;
+
+  Serial.print(" address : ");
+  Serial.print(address);
+
+  for(int i = 0; i < OPTION_NUM; i++){
+    address += sizeof(option_on[i]);
+    EEPROM.get(address,option_on[i]);
+    addresses[EEPROM_OPTION + i] = address;
+  }
 
   if(Robot_Mode == -1){
     for(int i = 0; i < EEPROM_SIZE; i++){
@@ -241,30 +250,39 @@ void oled_attack::OLED() {
       B = A;
     }
 
-    display.display();
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setCursor(25,30);
-    if(option_flag == 0){
-      display.println("NoneMotar");
-    }
-    else if(option_flag == 1){
-      display.println("printany");
-    }
-    else if(option_flag == 2){
-      display.println("LINE");
-    }
+    display_option();
 
+    if(Sentor){
+      A = 15;
+      for(int i = 0; i < EEPROM_OPTION; i++){
+        EEPROM.put(addresses[EEPROM_OPTION + i],option_on[i]);
+      }
+      EEPROM.commit();
+    }
     if(Right){
       option_flag++;
-      if(option_flag > 2){
+      if(option_flag > OPTION_NUM - 1){
         option_flag = 0;
       }
     }
     else if(Left){
       option_flag--;
       if(option_flag < 0){
-        option_flag = 1;
+        option_flag = OPTION_NUM - 1;
+      }
+    }
+
+    if(digitalRead(Toggle_Switch) != toogle){
+      toogle = digitalRead(Toggle_Switch);
+      for(int i = 0; i < OPTION_NUM; i++){
+        if(option_flag == i){
+          if(option_on[i] == 0){
+            option_on[i] = 1;
+          }
+          else{
+            option_on[i] = 0;
+          }
+        }
       }
     }
   }
@@ -566,6 +584,13 @@ void oled_attack::check_TactSwitch(){
       }
     }
   }
+
+  // Serial.print(" Left : ");
+  // Serial.print(Left);
+  // Serial.print(" Sentor : ");
+  // Serial.print(Sentor);
+  // Serial.print(" Right : ");
+  // Serial.println(Right);
 }
 
 
@@ -1907,7 +1932,46 @@ void oled_attack::select_testMode(){
 
 
 void oled_attack::display_option(){
-
+  display.display();
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setCursor(25,30);
+  if(option_flag == 0){
+    if(option_on[0]){
+      display.setTextColor(BLACK,WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+    display.println("NoneM");
+  }
+  else if(option_flag == 1){
+    if(option_on[1]){
+      display.setTextColor(BLACK,WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+    display.println("printany");
+  }
+  else if(option_flag == 2){
+    if(option_on[2]){
+      display.setTextColor(BLACK,WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+    display.println("LINE");
+  }
+  else if(option_flag == 3){
+    if(option_on[3]){
+      display.setTextColor(BLACK,WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+    display.println("NEOP");
+  }
 }
 
 

@@ -77,10 +77,28 @@ void loop() {
       pixels.clear();
       pixels.show();
     }
-    sendtoTeensy("state",80);
+    sendtoTeensy("A_NEO",DEF_NUM);
     OLED.OLED_moving();
 
     pixels.clear();
+    if(A_A == 10){
+      pixels.setPixelColor(4,pixels.Color(0,0,200));
+    }
+    else if(A_A == 12){
+      pixels.setPixelColor(4,pixels.Color(0,200,0));
+    }
+    else if(A_A == 20){
+      pixels.setPixelColor(4,pixels.Color(200,0,0));
+    }
+    else if(A_A == 21){
+      pixels.setPixelColor(4,pixels.Color(200,200,0));
+    }
+    else if(A_A == 22){
+      pixels.setPixelColor(4,pixels.Color(0,200,200));
+    }
+    else if(A_A == 23){
+      pixels.setPixelColor(4,pixels.Color(200,0,200));
+    }
     if(OLED.cam_on){
       int ball_pos = 0;
       ball_pos = (degrees(OLED.cam_vec.getAngle()) + 180) / 22.5 - 4;
@@ -260,6 +278,9 @@ int sendtoTeensy(const char *message,int val){
     flag = 15;
     send = OLED.setplay_flag;
   }
+  else if(message == "A_NEO"){
+    flag = 16;
+  }
 
   // Serial.print(" message : ");
   // Serial.print(message);
@@ -423,6 +444,30 @@ int recieveData(){
     else if(recieve_byte[1] == 10){
       OLED.ball_catch_val = recieve_int[0];
     }
+    else if(recieve_byte[1] == 11){
+      A_A = recieve_byte[2];
+      if(recieve_byte[2] == 11){
+        if(recieve_byte[3] != 240){
+          OLED.cam_on = 1;
+          OLED.cam_vec.setPolarCoordinates(recieve_byte[3],20);
+        }
+        else{
+          OLED.cam_on = 0;
+        }
+        if(recieve_byte[4] != 240){
+          OLED.cam_back_on = 1;
+          OLED.cam_back_vec.setPolarCoordinates(recieve_byte[4],20);
+        }
+        else{
+          OLED.cam_back_on = 0;
+        }
+      }
+      else{
+        OLED.cam_on = 0;
+        OLED.cam_back_on = 0;
+      }
+    }
+
     // Serial.println();
     return 1;
     break;

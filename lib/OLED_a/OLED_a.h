@@ -76,6 +76,7 @@ class oled_attack{
     void Kick_test();
     void select_testMode();
     void display_option();
+    void kick_HH();
 
     void OLED_moving();
 

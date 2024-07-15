@@ -425,6 +425,29 @@ void oled_attack::OLED() {
     }
     select_testMode();
     if(digitalRead(Toggle_Switch) != toogle){
+      if(test_flag != 4){
+        toogle = digitalRead(Toggle_Switch);
+        display.clearDisplay(); //初期化してI2Cバスを解放する
+        test_flag = 1;
+        end();
+      }
+    }
+    if(Sentor){
+      if(testMode == 4){
+        A = 130;
+      }
+    }
+  }
+  else if(A == 130){
+    if(A != B){
+      B = A;
+      Button_select = 0;
+    }
+    kick_HH();
+    if(Sentor){
+      A = 0;
+    }
+    if(digitalRead(Toggle_Switch) != toogle){
       toogle = digitalRead(Toggle_Switch);
       display.clearDisplay(); //初期化してI2Cバスを解放する
       test_flag = 1;
@@ -1834,16 +1857,28 @@ void oled_attack::Kick_test(){
 
 
 
+void oled_attack::kick_HH(){
+  display.display();
+  display.clearDisplay();
+
+  display.setTextSize(3);
+  display.setTextColor(WHITE);
+  display.setCursor(22,0);
+  display.println("!!Kick_HH!!");
+}
+
+
+
 void oled_attack::select_testMode(){
   display.display();
   display.clearDisplay();
   display.setTextSize(2);
   display.setCursor(25,30);
   if(testMode == 0){
-    display.println("TrackBall");
+    display.println("Ball");
   }
   else if(testMode == 1){
-    display.println("Motor test");
+    display.println("Motor");
   }
   else if(testMode == 2){
     display.println("Control");
@@ -1851,17 +1886,21 @@ void oled_attack::select_testMode(){
   else if(testMode == 3){
     display.println(" PID ");
   }
+  else if(testMode == 4){
+    display.println("KickHH");
+  }
+
 
   if(Right){
     testMode++;
-    if(testMode > 3){
+    if(testMode > 4){
       testMode = 0;
     }
   }
   else if(Left){
     testMode--;
     if(testMode < 0){
-      testMode = 3;
+      testMode = 4;
     }
   }
 }

@@ -23,6 +23,7 @@ int neopixel_flag = 0;
 int D_A,A_A;
 int D_flag,A_flag;
 int D_v;
+int D_A_15_flag;
 
 int sendPS4();
 
@@ -179,7 +180,7 @@ void loop() {
           pixels.setPixelColor(4,pixels.Color(100,0,100));
         }
         else if(D_A == 15){
-          pixels.setPixelColor(4,pixels.Color(0,100,0));
+          pixels.setPixelColor(3 + D_A_15_flag,pixels.Color(0,100,0));
         }
         else if(D_A == 16){
           pixels.setPixelColor(4,pixels.Color(0,100,100));
@@ -395,6 +396,7 @@ int recieveData(){
       D_v = recieve_byte[2];
       D_flag = recieve_byte[3];
       D_A = recieve_byte[4];
+      D_A_15_flag = recieve_byte[5];
     }
     else if(recieve_byte[1] == 8){
       if(recieve_int[1] == 0){

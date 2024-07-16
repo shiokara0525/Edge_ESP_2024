@@ -1174,8 +1174,7 @@ void oled_attack::display_waitStart(){
   //角度を再設定させるか、もとの選択画面に戻るかを決めるスイッチについての設定
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  if(Button_select == 0)  //exitが選択されていたら
-  {
+  if(Button_select == 0){
     if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
       display.setTextColor(BLACK, WHITE);
     }
@@ -1187,8 +1186,7 @@ void oled_attack::display_waitStart(){
   display.println("Exit");
 
   display.setTextColor(WHITE);
-  if(Button_select == 1)  //setDirが選択されていたら（デフォルトはこれ）
-  {
+  if(Button_select == 1){
     if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
       display.setTextColor(BLACK, WHITE);
     }
@@ -1200,8 +1198,7 @@ void oled_attack::display_waitStart(){
   display.println("SetDir");
 
   display.setTextColor(WHITE);
-  if(Button_select == 2)  //noneMが選択されていたら（デフォルトはこれ）
-  {
+  if(Button_select == 2){
     if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
       display.setTextColor(BLACK, WHITE);
     }
@@ -1219,21 +1216,28 @@ void oled_attack::display_waitStart(){
     setplay_flag = 1;
   }
 
-  if(Button_select == 4){
-    display.fillTriangle(18, 33, 24, 27, 24, 39, WHITE);  //◀の描画
-    setplay_flag = 2;
-  }
-
-
   display.setTextColor(WHITE);
+  if(Button_select == 4){
+    if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
+      display.setTextColor(BLACK, WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+  }
   display.setTextSize(3);
   display.setCursor(22,0);
   display.println("START");
 
+  if(Button_select == 5){
+    display.fillTriangle(18, 33, 24, 27, 24, 39, WHITE);  //◀の描画
+    setplay_flag = 2;
+  }
+
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)
 
   if(Right == 1){
-    if(Button_select < 4){
+    if(Button_select < 5){
       Button_select++;  //next
     }
     else{

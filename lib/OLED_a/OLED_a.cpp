@@ -585,6 +585,10 @@ void oled_attack::check_TactSwitch(){
     }
   }
 
+  if(Right == 1 && Left == 1){
+    Sentor = 1;
+  }
+
   // Serial.print(" Left : ");
   // Serial.print(Left);
   // Serial.print(" Sentor : ");
@@ -1165,6 +1169,8 @@ void oled_attack::display_waitStart(){
   display.setCursor(80,30);
   display.println(ac_dir);
 
+  setplay_flag = 0;
+
   //角度を再設定させるか、もとの選択画面に戻るかを決めるスイッチについての設定
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -1209,25 +1215,25 @@ void oled_attack::display_waitStart(){
   display.setTextColor(WHITE);
   display.setTextSize(3);
   if(Button_select == 3){
-    if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
-      display.setTextColor(BLACK, WHITE);
-    }
-    else{
-      display.setTextColor(WHITE);
-    }
-
-    if(setplay_flag){
-      display.setTextColor(BLACK,WHITE);
-    }
+    display.fillTriangle(110, 33, 104, 27, 104, 39, WHITE);  //▶の描画
+    setplay_flag = 1;
   }
 
+  if(Button_select == 4){
+    display.fillTriangle(18, 33, 24, 27, 24, 39, WHITE);  //◀の描画
+    setplay_flag = 2;
+  }
+
+
+  display.setTextColor(WHITE);
+  display.setTextSize(3);
   display.setCursor(22,0);
   display.println("START");
 
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)
 
   if(Right == 1){
-    if(Button_select < 3){
+    if(Button_select < 4){
       Button_select++;  //next
     }
     else{
@@ -1239,7 +1245,7 @@ void oled_attack::display_waitStart(){
       Button_select--;  //next
     }
     else{
-      Button_select = 3;
+      Button_select = 4;
     }
   }
 }

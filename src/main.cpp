@@ -74,6 +74,7 @@ void loop() {
   if(Mode == 1){
     if(Mode != Mode_old){
       Mode_old = Mode;
+      sendtoTeensy("SETPLAY",DEF_NUM);
       sendtoTeensy("Mode",1);
       pixels.clear();
       pixels.show();
@@ -284,6 +285,10 @@ int sendtoTeensy(const char *message,int val){
   }
   else if(message == "A_NEO"){
     flag = 16;
+  }
+  else if(message == "SETPLAY"){
+    flag = 17;
+    send = OLED.setplay_flag;
   }
 
   // Serial.print(" message : ");

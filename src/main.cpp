@@ -459,14 +459,14 @@ int recieveData(){
       if(recieve_byte[2] == 11){
         if(recieve_byte[3] != 240){
           OLED.cam_on = 1;
-          OLED.cam_vec.setPolarCoordinates(recieve_byte[3],20);
+          OLED.cam_vec.setPolarCoordinates(radians(recieve_byte[3] - 60),20);
         }
         else{
           OLED.cam_on = 0;
         }
         if(recieve_byte[4] != 240){
           OLED.cam_back_on = 1;
-          OLED.cam_back_vec.setPolarCoordinates(recieve_byte[4],20);
+          OLED.cam_back_vec.setPolarCoordinates(radians(recieve_byte[4] - 60),20);
         }
         else{
           OLED.cam_back_on = 0;

@@ -152,7 +152,13 @@ void loop() {
     if(OLED.option_on[3]){
       if(neopixel_flag){
         pixels.clear();
-        if(D_A == 10){
+        if(D_A == 0){
+          pixels.setPixelColor(5,pixels.Color(100,100,0));
+        }
+        else if(D_A == 5){
+          pixels.setPixelColor(5,pixels.Color(100,0,0));
+        }
+        else if(D_A == 10){
           for(int i = 0; i < 15; i++){
             if(D_v < 5 * i){
               if(D_flag == 0){

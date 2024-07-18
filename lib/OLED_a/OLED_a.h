@@ -130,6 +130,8 @@ class oled_attack{
     int ac_reset = 0;
     int kick_flag = 0;
 
+    int LINE_level_check;
+
     int setplay_flag = 0;
 
     int ball_catch_val = 0;

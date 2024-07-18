@@ -48,10 +48,13 @@ void oled_attack::setup(){
     addresses[EEPROM_OPTION + i] = address;
   }
 
-  if(Robot_Mode == -1){
-    for(int i = 0; i < EEPROM_SIZE; i++){
-      EEPROM.put(addresses[i],0);
-    }
+  // if(Robot_Mode == -1){
+  //   for(int i = 0; i < EEPROM_SIZE; i++){
+  //     EEPROM.put(addresses[i],0);
+  //   }
+  // }
+  if(LINE_level == 0){
+    LINE_level = 50;
   }
   EEPROM.commit();
 
@@ -1014,9 +1017,12 @@ void oled_attack::select_Mode(){
     }
   }
 
-  if(Left== 1){
+  if(Left == 1){
     if(Robot_Mode > 0){
       Robot_Mode--;  //next
+    }
+    else{
+      Robot_Mode = 1;
     }
   }
 }
@@ -1597,7 +1603,7 @@ void oled_attack::set_Avaliable(){
     }
   }
   display.setCursor(0,0);  //1列目
-  display.println("RA_A");  //この中に変数名を入力
+  display.println("ang_10");  //この中に変数名を入力
   display.setCursor(60,0);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1614,7 +1620,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,10);  //2列目
-  display.println("RA_B");  //この中に変数名を入力
+  display.println("ang_30");  //この中に変数名を入力
   display.setCursor(60,10);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1631,7 +1637,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,20); //3列目
-  display.println("C");  //この中に変数名を入力
+  display.println("ang_45");  //この中に変数名を入力
   display.setCursor(60,20);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1648,7 +1654,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,30); //4列目
-  display.println("D");  //この中に変数名を入力
+  display.println("ang_90");  //この中に変数名を入力
   display.setCursor(60,30);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1665,7 +1671,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,40); //5列目
-  display.println("E");  //この中に変数名を入力
+  display.println("D");  //この中に変数名を入力
   display.setCursor(60,40);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力

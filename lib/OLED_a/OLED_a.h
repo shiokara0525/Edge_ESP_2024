@@ -120,6 +120,7 @@ class oled_attack{
 
     const int Tact_Switch[3] = {18,35,19};
     const int Toggle_Switch = 34;  //スイッチのピン番号
+    const int Bluetooth_pin = 36;
 
     int RA_size;
     int val_max = 200;

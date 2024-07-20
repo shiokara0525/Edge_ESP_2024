@@ -139,6 +139,10 @@ void loop() {
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;
     }
+
+    if(digitalRead(OLED.Bluetooth_pin) == LOW){
+      Mode = 10;
+    }
   }
   else if(Mode == 2){
     if(Mode != Mode_old){
@@ -210,6 +214,20 @@ void loop() {
     }
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;
+    }
+  }
+  else if(Mode == 10){
+    if(Mode != Mode_old){
+      Mode_old = Mode;
+      sendtoTeensy("Mode",10);
+    }
+    if(digitalRead(OLED.Bluetooth_pin) == HIGH){
+      if(OLED.Robot_Mode == 0){
+        Mode = 1;
+      }
+      else if(OLED.Robot_Mode == 1){
+        Mode = 2;
+      }
     }
   }
   else if(Mode == 99){

@@ -62,6 +62,7 @@ void oled_attack::setup(){
     pinMode(Tact_Switch[i],INPUT);
   }
   pinMode(Toggle_Switch,INPUT);
+  pinMode(Bluetooth_pin,INPUT);
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -241,7 +242,7 @@ void oled_attack::OLED() {
         }
       }
     }
-    if(digitalRead(Toggle_Switch) != toogle){
+    if(digitalRead(Toggle_Switch) != toogle || digitalRead(Bluetooth_pin) == HIGH){
       toogle = digitalRead(Toggle_Switch);
       display.clearDisplay(); //初期化してI2Cバスを解放する
       end();

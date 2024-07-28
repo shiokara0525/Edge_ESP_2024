@@ -242,10 +242,15 @@ void oled_attack::OLED() {
         }
       }
     }
-    if(digitalRead(Toggle_Switch) != toogle || digitalRead(Bluetooth_pin) == HIGH){
+    if(digitalRead(Toggle_Switch) != toogle){
       toogle = digitalRead(Toggle_Switch);
       display.clearDisplay(); //初期化してI2Cバスを解放する
       end();
+    }
+    if(digitalRead(Bluetooth_pin) == HIGH && option_on[4]){
+      toogle = digitalRead(Toggle_Switch);
+      display.clearDisplay(); //初期化してI2Cバスを解放する
+      end();      
     }
   }
   else if(A == 16){
@@ -968,7 +973,7 @@ void oled_attack::display_main(){
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(85,35);
-    display.println("Start");
+    display.println("Option");
     display.setCursor(88,45);
     display.println("");
 
@@ -976,11 +981,36 @@ void oled_attack::display_main(){
       A = 120;
     }
   }
+  else if(OLED_select == 13){
+    display.setTextSize(2);
+    if(flash_OLED == 0){  //白黒反転　何秒かの周期で白黒が変化するようにタイマーを使っている（flash_OLEDについて調べたらわかる）
+      display.setTextColor(BLACK, WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+    display.setCursor(0,35);
+    display.println("Option");
+
+    //選択画面で矢印マークを中央に表示
+    display.fillTriangle(70, 43, 64, 37, 64, 49, WHITE);  //▶の描画
+
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(85,35);
+    display.println("Start");
+    display.setCursor(88,45);
+    display.println("");
+
+    if(Sentor){
+      A = 16;
+    }
+  }
   
 
   if(Right == 1){
     OLED_select++;  //次の画面へ
-    if(OLED_select > 12){
+    if(OLED_select > 13){
       OLED_select = 1;
     }
   }
@@ -1988,6 +2018,15 @@ void oled_attack::display_option(){
       display.setTextColor(WHITE);
     }
     display.println("NEOP");
+  }
+  else if(option_flag == 4){
+    if(option_on[4]){
+      display.setTextColor(BLACK,WHITE);
+    }
+    else{
+      display.setTextColor(WHITE);
+    }
+    display.println("BT");
   }
 }
 

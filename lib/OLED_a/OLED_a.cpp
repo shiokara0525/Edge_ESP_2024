@@ -1634,7 +1634,7 @@ void oled_attack::set_Avaliable(){
     }
   }
   display.setCursor(0,0);  //1列目
-  display.println("ang_10");  //この中に変数名を入力
+  display.println("ang_0");  //この中に変数名を入力
   display.setCursor(60,0);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1651,7 +1651,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,10);  //2列目
-  display.println("ang_30");  //この中に変数名を入力
+  display.println("ang_20");  //この中に変数名を入力
   display.setCursor(60,10);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1668,7 +1668,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,20); //3列目
-  display.println("ang_45");  //この中に変数名を入力
+  display.println("ang_30");  //この中に変数名を入力
   display.setCursor(60,20);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1685,7 +1685,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,30); //4列目
-  display.println("ang_90");  //この中に変数名を入力
+  display.println("ang_45");  //この中に変数名を入力
   display.setCursor(60,30);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
@@ -1961,18 +1961,21 @@ void oled_attack::select_testMode(){
   else if(testMode == 4){
     display.println("KickHH");
   }
+  else if(testMode == 5){
+    display.println("PS");
+  }
 
 
   if(Right){
     testMode++;
-    if(testMode > 4){
+    if(testMode > 5){
       testMode = 0;
     }
   }
   else if(Left){
     testMode--;
     if(testMode < 0){
-      testMode = 4;
+      testMode = 5;
     }
   }
 }

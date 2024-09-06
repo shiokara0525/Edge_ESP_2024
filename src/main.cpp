@@ -31,8 +31,8 @@ void setup() {
   delay(1000);
   Serial.begin(9600);
   Serial2.begin(115200);
-  BTSerial.begin("ESP32");
-  // PS4.begin("A0:A3:B3:2D:17:06");
+  // BTSerial.begin("ESP32");
+  PS4.begin("A0:A3:B3:2D:17:06");
   Serial.println("Ready.");
   OLED.setup();
   Mode = 99;
@@ -250,6 +250,7 @@ void loop() {
   if (PS4.isConnected()) {
     sendPS4();
   }
+  Serial.println(PS4.isConnected());
 }
 
 
@@ -320,6 +321,10 @@ int sendtoTeensy(const char *message,int val){
   else if(message == "SETPLAY"){
     flag = 17;
     send = OLED.setplay_flag;
+  }
+  else if(message == "PS4_Circle"){
+    flag = 18;
+    send = 1;
   }
 
   // Serial.print(" message : ");
@@ -535,7 +540,7 @@ int sendPS4(){
   send_int = contain[0] | contain[1];
   sendtoTeensy("PS4_R",send_int);
   if(PS4.Circle()){
-    sendtoTeensy("kick",1);
+    sendtoTeensy("PS4_Circle",1);
   }
   return 1;
 }

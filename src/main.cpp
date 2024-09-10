@@ -326,6 +326,10 @@ int sendtoTeensy(const char *message,int val){
     flag = 18;
     send = 1;
   }
+  else if(message == "PS4_Square"){
+    flag = 19;
+    send = 1;
+  }
 
   // Serial.print(" message : ");
   // Serial.print(message);
@@ -541,6 +545,9 @@ int sendPS4(){
   sendtoTeensy("PS4_R",send_int);
   if(PS4.Circle()){
     sendtoTeensy("PS4_Circle",1);
+  }
+  if(PS4.Square()){
+    sendtoTeensy("PS4_Square",1);
   }
   return 1;
 }

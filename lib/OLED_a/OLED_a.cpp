@@ -1964,18 +1964,27 @@ void oled_attack::select_testMode(){
   else if(testMode == 5){
     display.println("PS");
   }
+  else if(testMode == 6){
+    display.println("oudann");
+  }  
+  else if(testMode == 7){
+    display.println("naname");
+  }
+  else if(testMode == 8){
+    display.println("block");
+  }
 
 
   if(Right){
     testMode++;
-    if(testMode > 5){
+    if(testMode > 8){
       testMode = 0;
     }
   }
   else if(Left){
     testMode--;
     if(testMode < 0){
-      testMode = 5;
+      testMode = 8;
     }
   }
 }

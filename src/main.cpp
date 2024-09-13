@@ -104,7 +104,7 @@ void loop() {
       }
       if(OLED.cam_on){
         int ball_pos = 0;
-        ball_pos = (degrees(OLED.cam_vec.getAngle()) + 180) / 22.5 - 4;
+        ball_pos = (degrees(OLED.cam_vec.return_azimuth()) + 180) / 22.5 - 4;
         if(ball_pos < 0){
           ball_pos += 16;
         }
@@ -119,7 +119,7 @@ void loop() {
       }
       if(OLED.cam_back_on){
         int ball_pos = 0;
-        ball_pos = -(degrees(OLED.cam_back_vec.getAngle())) / 22.5 + 12;
+        ball_pos = -(degrees(OLED.cam_back_vec.return_azimuth())) / 22.5 + 12;
         if(ball_pos < 0){
           ball_pos += 16;
         }
@@ -410,12 +410,10 @@ int recieveData(){
       sendtoTeensy("CHECK",DEF_NUM);
     }
     else if(recieve_byte[1] == 2){
-      OLED.ball_vec.setX(recieve_int[0]);
-      OLED.ball_vec.setY(recieve_int[1]);
+      OLED.ball_vec.set_coodinate(recieve_int[0],recieve_int[1]);
     }
     else if(recieve_byte[1] == 3){
-      OLED.line_vec.setX(recieve_int[0] * 0.01);
-      OLED.line_vec.setY(recieve_int[1] * 0.01);
+      OLED.line_vec.set_coodinate(recieve_int[0] * 0.01, recieve_int[1] * 0.01);
       // OLED.line_vec.print();
     }
     else if(recieve_byte[1] == 4){
@@ -424,7 +422,7 @@ int recieveData(){
       }
       else{
         OLED.cam_on = 1;
-        OLED.cam_vec.setPolarCoordinates(radians(recieve_int[0]),recieve_int[1]);
+        OLED.cam_vec.set_polar(radians(recieve_int[0]),recieve_int[1]);
       }
     }
     else if(recieve_byte[1] == 5){
@@ -449,7 +447,7 @@ int recieveData(){
       }
       else{
         OLED.cam_back_on = 1;
-        OLED.cam_back_vec.setPolarCoordinates(radians(recieve_int[0]),recieve_int[1]);
+        OLED.cam_back_vec.set_polar(recieve_int[0],recieve_int[1]);
       }
       // OLED.cam_back_vec.print();
     }
@@ -499,14 +497,14 @@ int recieveData(){
       if(recieve_byte[2] == 11){
         if(recieve_byte[3] != 240){
           OLED.cam_on = 1;
-          OLED.cam_vec.setPolarCoordinates(radians(recieve_byte[3] - 60),20);
+          OLED.cam_vec.set_polar(recieve_byte[3] - 60,20);
         }
         else{
           OLED.cam_on = 0;
         }
         if(recieve_byte[4] != 240){
           OLED.cam_back_on = 1;
-          OLED.cam_back_vec.setPolarCoordinates(radians(recieve_byte[4] - 60),20);
+          OLED.cam_back_vec.set_polar(recieve_byte[4] - 60,20);
         }
         else{
           OLED.cam_back_on = 0;

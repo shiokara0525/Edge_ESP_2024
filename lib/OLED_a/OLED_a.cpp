@@ -1407,13 +1407,13 @@ void oled_attack::display_Line(){
   display.drawCircle(32, 32, 30, WHITE);  //○ 20
 
   //ラインの直線と円の交点の座標を求める
-  float line_y = line_vec.getY();  //ラインのx座標
-  float line_x = line_vec.getX();  //ラインのy座標
+  float line_y = line_vec.return_x();  //ラインのx座標
+  float line_x = line_vec.return_y();  //ラインのy座標
 
-  float Ax = line_x - line_y * sqrt(9 - pow(line_vec.magnitude(), 2)) / line_vec.magnitude();
-  float Ay = line_y + line_x * sqrt(9 - pow(line_vec.magnitude(), 2)) / line_vec.magnitude();
-  float Bx = line_x + line_y * sqrt(9 - pow(line_vec.magnitude(), 2)) / line_vec.magnitude();
-  float By = line_y - line_x * sqrt(9 - pow(line_vec.magnitude(), 2)) / line_vec.magnitude();
+  float Ax = line_x - line_y * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
+  float Ay = line_y + line_x * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
+  float Bx = line_x + line_y * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
+  float By = line_y - line_x * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
 
 
   //ラインの線の座標をOLEDでの座標に変換(-1~1の値を0~60の値に変換)
@@ -1422,7 +1422,7 @@ void oled_attack::display_Line(){
   int OLED_line_bx = map(Bx, 3, -3, 60, 0);  //ラインの線のB点のx座標
   int OLED_line_by = map(By, 3, -3, 0, 60);  //ラインの線のB点のy座標
 
-  if(line_vec.getMagnitude() != 0){  //ラインがロボットの下にある
+  if(line_vec.return_magnitude() != 0){  //ラインがロボットの下にある
     //ラインの線を表示
     display.drawLine((OLED_line_ax + 2), (62 - OLED_line_ay), (OLED_line_bx + 2), (62 - OLED_line_by), WHITE);
   }
@@ -1440,9 +1440,9 @@ void oled_attack::display_Line(){
   //ラインの角度を表示する
   display.setCursor(68,25);
   display.println("Dir:");
-  if(line_vec.getMagnitude() != 0){  //ラインがロボットの下にある
+  if(line_vec.return_magnitude() != 0){  //ラインがロボットの下にある
     display.setCursor(96,25);
-    display.println(int(degrees(line_vec.getAngle())));
+    display.println(int(degrees(line_vec.return_azimuth())));
   }
   else{  //ラインがロボットの下にない
     display.fillRect(96, 25, 34, 10, WHITE);
@@ -1451,9 +1451,9 @@ void oled_attack::display_Line(){
   //ラインの距離を表示する
   display.setCursor(68,39);
   display.println("far:");
-  if(line_vec.getMagnitude() != 0){  //ラインがロボットの下にある
+  if(line_vec.return_magnitude() != 0){  //ラインがロボットの下にある
     display.setCursor(96,39);
-    display.println((line_vec.magnitude()));
+    display.println((line_vec.return_magnitude()));
   }
   else{  //ラインがロボットの下にない
     display.fillRect(96, 39, 34, 10, WHITE);
@@ -1551,8 +1551,8 @@ void oled_attack::display_Ball(){
   display.clearDisplay();
 
   //ボールの座標をOLED用にする（無理やりint型にしてOLEDのドットに合わせる）
-  int OLED_ball_x = map(ball_vec.magnitude() * sin(ball_vec.getAngle()), -150, 150, 0, 60);  //
-  int OLED_ball_y = map(ball_vec.magnitude() * cos(ball_vec.getAngle()), -150, 150, 0, 60);  //
+  int OLED_ball_x = map(ball_vec.return_magnitude() * sin(ball_vec.return_azimuth()), -150, 150, 0, 60);  //
+  int OLED_ball_y = map(ball_vec.return_magnitude() * cos(ball_vec.return_azimuth()), -150, 150, 0, 60);  //
 
   //ボールの位置状況マップを表示する
   display.drawCircle(32, 32, 30, WHITE);  //○ 30
@@ -1580,9 +1580,9 @@ void oled_attack::display_Ball(){
   //ボールの角度を表示する
   display.setCursor(68,24);
   display.println("Dir:");
-  if(ball_vec.getMagnitude() != 0){  //ボールがあれば値を表示
+  if(ball_vec.return_magnitude() != 0){  //ボールがあれば値を表示
     display.setCursor(96,24);
-    display.println(int(degrees(ball_vec.getAngle())));
+    display.println(int(degrees(ball_vec.return_azimuth())));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 24, 34, 10, WHITE);
@@ -1591,9 +1591,9 @@ void oled_attack::display_Ball(){
   //ボールの距離を表示する
   display.setCursor(68,38);
   display.println("far:");
-  if(ball_vec.getMagnitude() != 0){  //ボールがあれば値を表示
+  if(ball_vec.return_magnitude() != 0){  //ボールがあれば値を表示
     display.setCursor(96,38);
-    display.println(int(ball_vec.magnitude()));
+    display.println(int(ball_vec.return_magnitude()));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 38, 34, 10, WHITE);
@@ -1601,7 +1601,7 @@ void oled_attack::display_Ball(){
 
   int ball_pos = 0;
   pixels.clear();
-  ball_pos = (degrees(ball_vec.getAngle()) + 180) / 22.5 - 4;
+  ball_pos = (degrees(ball_vec.return_azimuth()) + 180) / 22.5 - 4;
   if(ball_pos < 0){
     ball_pos += 16;
   }
@@ -1760,8 +1760,8 @@ void oled_attack::display_Cam(){
   display.clearDisplay();
 
   //ボールの座標をOLED用にする（無理やりint型にしてOLEDのドットに合わせる）
-  int OLED_cam_x = map((80 - cam_vec.magnitude()) * sin(radians(cam_vec.getAngle())), -80, 80, 0, 60);  //
-  int OLED_cam_y = map((80 - cam_vec.magnitude()) * cos(radians(cam_vec.getAngle())), -80, 80, 0, 60);  //
+  int OLED_cam_x = map((80 - cam_vec.return_magnitude()) * sin(radians(cam_vec.return_azimuth())), -80, 80, 0, 60);  //
+  int OLED_cam_y = map((80 - cam_vec.return_magnitude()) * cos(radians(cam_vec.return_azimuth())), -80, 80, 0, 60);  //
 
   //ボールの位置状況マップを表示する
   display.drawCircle(32, 32, 30, WHITE);  //○ 30
@@ -1793,7 +1793,7 @@ void oled_attack::display_Cam(){
   display.println("Dir:");
   if(cam_on){  //ボールがあれば値を表示
     display.setCursor(96,24);
-    display.println(int(degrees(cam_vec.getAngle())));
+    display.println(int(degrees(cam_vec.return_azimuth())));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 24, 34, 10, WHITE);
@@ -1804,7 +1804,7 @@ void oled_attack::display_Cam(){
   display.println("Size:");
   if(cam_on){  //ボールがあれば値を表示
     display.setCursor(96,38);
-    display.println(int(cam_vec.magnitude()));
+    display.println(int(cam_vec.return_magnitude()));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 38, 34, 10, WHITE);
@@ -1814,7 +1814,7 @@ void oled_attack::display_Cam(){
   pixels.clear();
   if(cam_on){
     int ball_pos = 0;
-    ball_pos = (degrees(cam_vec.getAngle()) + 180) / 22.5 - 4;
+    ball_pos = (degrees(cam_vec.return_azimuth()) + 180) / 22.5 - 4;
     if(ball_pos < 0){
       ball_pos += 16;
     }
@@ -1829,7 +1829,7 @@ void oled_attack::display_Cam(){
   }
   if(cam_back_on){
     int ball_pos = 0;
-    ball_pos = -(degrees(cam_back_vec.getAngle())) / 22.5 + 12;
+    ball_pos = -(degrees(cam_back_vec.return_azimuth())) / 22.5 + 12;
     if(ball_pos < 0){
       ball_pos += 16;
     }

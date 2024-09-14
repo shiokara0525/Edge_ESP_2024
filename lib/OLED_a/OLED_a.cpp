@@ -1442,7 +1442,7 @@ void oled_attack::display_Line(){
   display.println("Dir:");
   if(line_vec.return_magnitude() != 0){  //ラインがロボットの下にある
     display.setCursor(96,25);
-    display.println(int(degrees(line_vec.return_azimuth())));
+    display.println(int(line_vec.return_azimuth()));
   }
   else{  //ラインがロボットの下にない
     display.fillRect(96, 25, 34, 10, WHITE);
@@ -1551,8 +1551,8 @@ void oled_attack::display_Ball(){
   display.clearDisplay();
 
   //ボールの座標をOLED用にする（無理やりint型にしてOLEDのドットに合わせる）
-  int OLED_ball_x = map(ball_vec.return_magnitude() * sin(ball_vec.return_azimuth()), -150, 150, 0, 60);  //
-  int OLED_ball_y = map(ball_vec.return_magnitude() * cos(ball_vec.return_azimuth()), -150, 150, 0, 60);  //
+  int OLED_ball_x = map(ball_vec.return_x(), -150, 150, 0, 60);  //
+  int OLED_ball_y = map(ball_vec.return_y(), -150, 150, 0, 60);  //
 
   //ボールの位置状況マップを表示する
   display.drawCircle(32, 32, 30, WHITE);  //○ 30
@@ -1582,7 +1582,7 @@ void oled_attack::display_Ball(){
   display.println("Dir:");
   if(ball_vec.return_magnitude() != 0){  //ボールがあれば値を表示
     display.setCursor(96,24);
-    display.println(int(degrees(ball_vec.return_azimuth())));
+    display.println(int(ball_vec.return_azimuth()));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 24, 34, 10, WHITE);
@@ -1601,7 +1601,7 @@ void oled_attack::display_Ball(){
 
   int ball_pos = 0;
   pixels.clear();
-  ball_pos = (degrees(ball_vec.return_azimuth()) + 180) / 22.5 - 4;
+  ball_pos = ((ball_vec.return_azimuth()) + 180) / 22.5 - 4;
   if(ball_pos < 0){
     ball_pos += 16;
   }
@@ -1793,7 +1793,7 @@ void oled_attack::display_Cam(){
   display.println("Dir:");
   if(cam_on){  //ボールがあれば値を表示
     display.setCursor(96,24);
-    display.println(int(degrees(cam_vec.return_azimuth())));
+    display.println(int(cam_vec.return_azimuth()));
   }
   else{  //ボールがなければ白い四角形を表示
     display.fillRect(96, 24, 34, 10, WHITE);
@@ -1814,7 +1814,7 @@ void oled_attack::display_Cam(){
   pixels.clear();
   if(cam_on){
     int ball_pos = 0;
-    ball_pos = (degrees(cam_vec.return_azimuth()) + 180) / 22.5 - 4;
+    ball_pos = ((cam_vec.return_azimuth()) + 180) / 22.5 - 4;
     if(ball_pos < 0){
       ball_pos += 16;
     }
@@ -1829,7 +1829,7 @@ void oled_attack::display_Cam(){
   }
   if(cam_back_on){
     int ball_pos = 0;
-    ball_pos = -(degrees(cam_back_vec.return_azimuth())) / 22.5 + 12;
+    ball_pos = -(cam_back_vec.return_azimuth()) / 22.5 + 12;
     if(ball_pos < 0){
       ball_pos += 16;
     }

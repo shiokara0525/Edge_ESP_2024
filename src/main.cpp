@@ -104,7 +104,7 @@ void loop() {
       }
       if(OLED.cam_on){
         int ball_pos = 0;
-        ball_pos = (degrees(OLED.cam_vec.return_azimuth()) + 180) / 22.5 - 4;
+        ball_pos = ((OLED.cam_vec.return_azimuth()) + 180) / 22.5 - 4;
         if(ball_pos < 0){
           ball_pos += 16;
         }
@@ -119,7 +119,7 @@ void loop() {
       }
       if(OLED.cam_back_on){
         int ball_pos = 0;
-        ball_pos = -(degrees(OLED.cam_back_vec.return_azimuth())) / 22.5 + 12;
+        ball_pos = -(OLED.cam_back_vec.return_azimuth()) / 22.5 + 12;
         if(ball_pos < 0){
           ball_pos += 16;
         }

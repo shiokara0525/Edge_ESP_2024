@@ -1407,20 +1407,38 @@ void oled_attack::display_Line(){
   display.drawCircle(32, 32, 30, WHITE);  //○ 20
 
   //ラインの直線と円の交点の座標を求める
-  float line_y = line_vec.return_x();  //ラインのx座標
-  float line_x = line_vec.return_y();  //ラインのy座標
+  float line_y = line_vec.return_y();  //ラインのx座標
+  float line_x = line_vec.return_x();  //ラインのy座標
+  float Ax,Ay,Bx,By;
 
-  float Ax = line_x - line_y * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
-  float Ay = line_y + line_x * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
-  float Bx = line_x + line_y * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
-  float By = line_y - line_x * sqrt(9 - pow(line_vec.return_magnitude(), 2)) / line_vec.return_magnitude();
+  if(abs(line_y) < 0.0001){
+    Ax = 2;
+    Ay = 0;
+    Bx = -2;
+    By = 0;
+  }
+  else{
+    float s = line_x / line_y;
+    float t = pow(line_vec.return_magnitude(), 2) / line_y;
+
+    Ax = (-s*t + sqrt(pow(s*t , 2) - (s + 1) * (t*t - 4))) / (1 + s*s);
+    Ay = s * Ax + t;
+    Bx = (-s*t - sqrt(pow(s*t , 2) - (s + 1) * (t*t - 4))) / (1 + s*s);
+    By = s * Bx + t;
+  }
+
+
+  line_vec.print();
+  Serial.printf(" (x1,y1) = (%.2f, %.2f) , (x2,y2) = (%.2f, %.2f)",Ax,Ay,Bx,By);
+
 
 
   //ラインの線の座標をOLEDでの座標に変換(-1~1の値を0~60の値に変換)
-  int OLED_line_ax = map(Ax, 3, -3, 60, 0);  //ラインの線のA点のx座標
-  int OLED_line_ay = map(Ay, 3, -3, 0, 60);  //ラインの線のA点のy座標
-  int OLED_line_bx = map(Bx, 3, -3, 60, 0);  //ラインの線のB点のx座標
-  int OLED_line_by = map(By, 3, -3, 0, 60);  //ラインの線のB点のy座標
+  int OLED_line_ax = Ax * 15.0 + 30;
+  int OLED_line_ay = Ay * 15.0 + 30;
+  int OLED_line_bx = Bx * 15.0 + 30;
+  int OLED_line_by = By * 15.0 + 30;
+  Serial.printf(" (x1,y1) = (%.2f, %.2f) , (x2,y2) = (%.2f, %.2f)\n",OLED_line_ax,OLED_line_ay,OLED_line_bx,OLED_line_by);
 
   if(line_vec.return_magnitude() != 0){  //ラインがロボットの下にある
     //ラインの線を表示
@@ -1478,7 +1496,7 @@ void oled_attack::display_Line(){
           }
           pixels.setPixelColor(num_neo[0],pixels.Color(0,100,0));
           pixels.setPixelColor(num_neo[1],pixels.Color(0,100,0));
-          Serial.printf(" !!! %d",number);
+          // Serial.printf(" !!! %d",number);
           break;
         }
       }

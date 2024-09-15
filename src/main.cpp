@@ -250,7 +250,7 @@ void loop() {
   if (PS4.isConnected()) {
     sendPS4();
   }
-  Serial.println(PS4.isConnected());
+  // Serial.println(PS4.isConnected());
 }
 
 

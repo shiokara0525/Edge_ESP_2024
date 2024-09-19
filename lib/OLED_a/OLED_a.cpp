@@ -1411,11 +1411,11 @@ void oled_attack::display_Line(){
   float line_x = line_vec.return_x();  //ラインのy座標
   float Ax,Ay,Bx,By;
 
-  if(abs(line_y) < 0.0001){
-    Ax = 2;
-    Ay = 0;
-    Bx = -2;
-    By = 0;
+  if(abs(line_y) < 0.0000001){
+    Ax = 0;
+    Ay = 2;
+    Bx = 0;
+    By = -2;
   }
   else{
     float s = line_x / line_y;
@@ -1428,8 +1428,8 @@ void oled_attack::display_Line(){
   }
 
 
-  line_vec.print();
-  Serial.printf(" (x1,y1) = (%.2f, %.2f) , (x2,y2) = (%.2f, %.2f)",Ax,Ay,Bx,By);
+  // line_vec.print();
+  // Serial.printf(" (x1,y1) = (%.2f, %.2f) , (x2,y2) = (%.2f, %.2f)",Ax,Ay,Bx,By);
 
 
 
@@ -1438,11 +1438,11 @@ void oled_attack::display_Line(){
   int OLED_line_ay = Ay * 15.0 + 30;
   int OLED_line_bx = Bx * 15.0 + 30;
   int OLED_line_by = By * 15.0 + 30;
-  Serial.printf(" (x1,y1) = (%.2f, %.2f) , (x2,y2) = (%.2f, %.2f)\n",OLED_line_ax,OLED_line_ay,OLED_line_bx,OLED_line_by);
+  // Serial.printf(" (x1,y1) = (%.2f, %.2f) , (x2,y2) = (%.2f, %.2f)\n",OLED_line_ax,OLED_line_ay,OLED_line_bx,OLED_line_by);
 
   if(line_vec.return_magnitude() != 0){  //ラインがロボットの下にある
     //ラインの線を表示
-    display.drawLine((OLED_line_ax + 2), (62 - OLED_line_ay), (OLED_line_bx + 2), (62 - OLED_line_by), WHITE);
+    display.drawLine((62 - OLED_line_ax), (62 - OLED_line_ay), (62 - OLED_line_bx), (62 - OLED_line_by), WHITE);
   }
 
   //"Line"と表示する

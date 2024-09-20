@@ -24,7 +24,7 @@ Vector2D::Vector2D(float x_,float y_){
 
 Vector2D::Vector2D(float Azimuth,float Magnitude,int a){
     this->azimuth = Azimuth;
-    azimuth = 90 - arg;
+    arg = 90 - Azimuth;
     if(azimuth < -180){
         azimuth += 360;
     }

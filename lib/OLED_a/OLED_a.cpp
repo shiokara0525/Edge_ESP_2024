@@ -1271,14 +1271,6 @@ void oled_attack::display_waitStart(){
     setplay_flag = 2;
   }
 
-  pixels.clear();
-  int ang_pos = (ac_dir + 180) / 22.5 - 4;
-  if(ang_pos < 0){
-    ang_pos += 16;
-  }
-  pixels.setPixelColor(ang_pos,pixels.Color(0,150,0));
-  pixels.show();
-
   //タクトスイッチが押されたら(手を離されるまで次のステートに行かせたくないため、変数aaを使っている)
 
   if(Right == 1){

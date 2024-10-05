@@ -515,6 +515,18 @@ int recieveData(){
         OLED.cam_back_on = 0;
       }
     }
+    else if(recieve_byte[1] == 12){
+      OLED.cam_front_x1 = recieve_byte[2];
+      OLED.cam_front_y1 = recieve_byte[3];
+      OLED.cam_front_w = recieve_byte[4];
+      OLED.cam_front_h = recieve_byte[5];
+    }
+    else if(recieve_byte[1] == 13){
+      OLED.cam_back_x1 = recieve_byte[2];
+      OLED.cam_back_y1 = recieve_byte[3];
+      OLED.cam_back_w = recieve_byte[4];
+      OLED.cam_back_h = recieve_byte[5];
+    }
 
     // Serial.println();
     return 1;

@@ -1777,24 +1777,18 @@ void oled_attack::display_Cam(){
   display.display();
   display.clearDisplay();
 
-  //ボールの座標をOLED用にする（無理やりint型にしてOLEDのドットに合わせる）
-  int OLED_cam_x = map((80 - cam_vec.return_magnitude()) * sin(radians(cam_vec.return_azimuth())), -80, 80, 0, 60);  //
-  int OLED_cam_y = map((80 - cam_vec.return_magnitude()) * cos(radians(cam_vec.return_azimuth())), -80, 80, 0, 60);  //
 
   //ボールの位置状況マップを表示する
   display.drawCircle(32, 32, 30, WHITE);  //○ 30
   display.drawCircle(32, 32, 20, WHITE);  //○ 20
   display.drawCircle(32, 32, 10, WHITE);  //○ 10
-  display.drawLine(2, 32, 62, 32, WHITE); //-
-  display.drawLine(32, 2, 32, 62, WHITE); //|
+  display.drawLine(2, 12, 62, 12, WHITE); //-
+  display.drawLine(2, 52, 62, 52, WHITE); //|
+  display.drawLine(2, 22, 2, 52, WHITE); //|
+  display.drawLine(62, 12, 62, 52, WHITE); //|
 
-  //ボールの位置を表示する
-  if(1)  //ボールがあれば
-  {
-    display.fillCircle((OLED_cam_x + 2), (62 - OLED_cam_y), 5, WHITE);
-  }
-  Serial.print(" color : ");
-  Serial.print(goal_color);
+  display.drawRect(2 + (cam_front_x1 / 2),12 + (cam_front_y1 / 2),cam_front_w / 2,cam_front_h / 2,WHITE);
+
 
   //"Ball"と表示する
   display.setTextSize(2);

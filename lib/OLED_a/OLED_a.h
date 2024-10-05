@@ -147,6 +147,9 @@ class oled_attack{
     int cam_on = 0;
     int cam_back_on = 0;
 
+    int cam_front_x1,cam_front_y1,cam_front_w,cam_front_h;
+    int cam_back_x1,cam_back_y1,cam_back_w,cam_back_h;
+
 
     Vector2D line_vec;
     Vector2D ball_vec;

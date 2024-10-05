@@ -422,7 +422,8 @@ int recieveData(){
       }
       else{
         OLED.cam_on = 1;
-        OLED.cam_vec.set_polar((recieve_int[0] - 40),recieve_int[1]);
+        OLED.cam_front_ang = recieve_int[0] - 40;
+        OLED.cam_front_size = recieve_int[1];
       }
     }
     else if(recieve_byte[1] == 5){
@@ -447,9 +448,9 @@ int recieveData(){
       }
       else{
         OLED.cam_back_on = 1;
-        OLED.cam_back_vec.set_polar(recieve_int[0],recieve_int[1]);
+        OLED.cam_back_ang = recieve_int[0] - 40;
+        OLED.cam_back_size = recieve_int[1];
       }
-      // OLED.cam_back_vec.print();
     }
     else if(recieve_byte[1] == 9){
       OLED.line_on = 1;

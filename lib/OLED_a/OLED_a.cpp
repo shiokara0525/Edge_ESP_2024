@@ -1787,41 +1787,72 @@ void oled_attack::display_Cam(){
   display.drawLine(2, 22, 2, 52, WHITE); //|
   display.drawLine(62, 12, 62, 52, WHITE); //|
 
-  display.drawRect(2 + (cam_front_x1 / 2),12 + (cam_front_y1 / 2),cam_front_w / 2,cam_front_h / 2,WHITE);
+  if(cam_is_front == 1){
+    display.drawRect(2 + (cam_front_x1 / 2),12 + (cam_front_y1 / 2),cam_front_w / 2,cam_front_h / 2,WHITE);
+
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(68,0);
+    display.println("Cam_front");
+  }
+  else{
+    display.drawRect(2 + (cam_back_x1 / 2),12 + (cam_back_y1 / 2),cam_back_w / 2,cam_back_h / 2,WHITE);
+
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(68,0);
+    display.println("Cam_back");
+  }
 
 
-  //"Ball"と表示する
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(68,0);
-  display.println("Cam");
+
+  if(cam_is_front == 1){
+    display.setCursor(68,24);
+    display.println("Dir:");
+    if(cam_on){  //ボールがあれば値を表示
+      display.setCursor(96,24);
+      display.println(int(cam_front_ang));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 24, 34, 10, WHITE);
+    }
+
+    //ボールの距離を表示する
+    display.setCursor(68,38);
+    display.println("Size:");
+    if(cam_on){  //ボールがあれば値を表示
+      display.setCursor(96,38);
+      display.println(int(cam_front_size));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 38, 34, 10, WHITE);
+    }
+  }
+  else{
+    display.setCursor(68,24);
+    display.println("Dir:");
+    if(cam_on){  //ボールがあれば値を表示
+      display.setCursor(96,24);
+      display.println(int(cam_back_ang));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 24, 34, 10, WHITE);
+    }
+
+    display.setCursor(68,38);
+    display.println("Size:");
+    if(cam_on){  //ボールがあれば値を表示
+      display.setCursor(96,38);
+      display.println(int(cam_back_size));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 38, 34, 10, WHITE);
+    }
+  }
 
   //ここから下のコードのテキストをsize1にする
   display.setTextSize(1);
   display.setTextColor(WHITE);
-
-  //ボールの角度を表示する
-  display.setCursor(68,24);
-  display.println("Dir:");
-  if(cam_on){  //ボールがあれば値を表示
-    display.setCursor(96,24);
-    display.println(int(cam_vec.return_azimuth()));
-  }
-  else{  //ボールがなければ白い四角形を表示
-    display.fillRect(96, 24, 34, 10, WHITE);
-  }
-
-  //ボールの距離を表示する
-  display.setCursor(68,38);
-  display.println("Size:");
-  if(cam_on){  //ボールがあれば値を表示
-    display.setCursor(96,38);
-    display.println(int(cam_vec.return_magnitude()));
-  }
-  else{  //ボールがなければ白い四角形を表示
-    display.fillRect(96, 38, 34, 10, WHITE);
-  }
-
 
   pixels.clear();
   if(cam_on){

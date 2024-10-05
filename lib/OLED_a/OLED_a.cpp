@@ -287,9 +287,11 @@ void oled_attack::OLED() {
         if(option_flag == i){
           if(option_on[i] == 0){
             option_on[i] = 1;
+            sendtoTeensy("NONE_MOTOR",1);
           }
           else{
             option_on[i] = 0;
+            sendtoTeensy("NONE_MOTOR",0);
           }
         }
       }

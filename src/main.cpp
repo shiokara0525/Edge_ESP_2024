@@ -330,6 +330,10 @@ int sendtoTeensy(const char *message,int val){
     flag = 19;
     send = 1;
   }
+  else if(message == "NONE_MOTOR"){
+    flag = 20;
+    send = OLED.option_on[0];
+  }
 
   // Serial.print(" message : ");
   // Serial.print(message);

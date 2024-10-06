@@ -10,14 +10,21 @@ void send_log::set_log(int sort_,int data_){
     send_data = data_;
 }
 
-send_teensy::send_teensy(int sort_,int data_){
-    log[count].set_log(sort_,data_);
-    count++;
+
+void send_teensy::setup(){
+    Serial2.begin(115200);
 }
 
 void send_teensy::set_data(int sort_,int data_){
     log[count].set_log(sort_,data_);
     count++;
+}
+
+void send_teensy::set_data(int sort_,int data_[6]){
+    for(int i = 0; i < 6; i++){
+        log[count].set_log(sort_ + i,data_[i]);
+        count++;
+    }
 }
 
 void send_teensy::send_onedata(int sort_,int data_){

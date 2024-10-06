@@ -1857,7 +1857,7 @@ void oled_attack::display_Cam(){
   pixels.clear();
   if(cam_on){
     int ball_pos = 0;
-    ball_pos = ((cam_vec.return_azimuth()) + 180) / 22.5 - 4;
+    ball_pos = (cam_front_ang + 180) / 22.5 - 4;
     if(ball_pos < 0){
       ball_pos += 16;
     }
@@ -1872,7 +1872,7 @@ void oled_attack::display_Cam(){
   }
   if(cam_back_on){
     int ball_pos = 0;
-    ball_pos = -(cam_back_vec.return_azimuth()) / 22.5 + 12;
+    ball_pos = -(cam_back_ang / 22.5) + 12;
     if(ball_pos < 0){
       ball_pos += 16;
     }

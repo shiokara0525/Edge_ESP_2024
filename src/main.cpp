@@ -15,7 +15,7 @@ timer timer_main;
 int Mode = 0;
 int Mode_old = 999;
 
-int sendtoTeensy(const char*,int);
+int sendtoTeensy(const char*,int); //消すよ
 
 int recieveData();
 

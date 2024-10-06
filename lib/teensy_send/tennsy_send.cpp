@@ -40,3 +40,15 @@ int send_teensy::send_data(){
         send_onedata(log[i].sort,log[i].send_data);
     }
 }
+
+
+void send_teensy::print(){
+    for(int i = 0; i < count; i++){
+        Serial.print(i);
+        Serial.print(" : ");
+        Serial.print(" sort : ");
+        Serial.print(log[i].sort);
+        Serial.print(" data : ");
+        Serial.print(log[i].send_data);
+    }
+}

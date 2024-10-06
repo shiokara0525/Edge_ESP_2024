@@ -24,4 +24,5 @@ class send_teensy{
     send_teensy(int sort_,int data_);
     void set_data(int sort_,int data_);
     int send_data();
+    void print();
 };

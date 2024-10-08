@@ -37,7 +37,7 @@ class send_log{
 
 class send_teensy{
     private:
-    send_log log[100];
+    send_log log[20];
     int count = 0;
     void send_onedata(int sort_,int data_);
     void send_sixdata(int sort_,int data_[6]);
@@ -48,4 +48,5 @@ class send_teensy{
     void set_data(int sort_,int data_[6]);
     int send_data();
     void print();
+    void reset();
 };

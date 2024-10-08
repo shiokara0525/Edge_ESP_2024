@@ -46,7 +46,16 @@ int send_teensy::send_data(){
     for(int i = 0; i < count; i++){
         send_onedata(log[i].sort,log[i].send_data);
     }
+    reset();
     return count;
+}
+
+
+void send_teensy::reset(){
+    for(int i = 0; i < count; i++){
+        log[i].set_log(0,0);
+    }
+    count = 0;
 }
 
 

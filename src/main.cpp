@@ -13,6 +13,7 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ80
 
 send_teensy teensy;
 timer timer_main;
+int timer_[3];
 
 int Mode = 0;
 int Mode_old = 999;
@@ -47,8 +48,7 @@ void loop() {
     Serial.print(" recieve ");
     recieveData();
   }
-  Serial.print(" recieve : ");
-  Serial.print(timer_main.read_ms());
+  timer_[0] = timer_main.read_ms();
 
 
   if(Mode == 0){
@@ -250,16 +250,21 @@ void loop() {
       Mode = 0;
     }
   }
-  Serial.print(" Mode : ");
-  Serial.print(timer_main.read_ms());
+  timer_[1] = timer_main.read_ms();
 
   if (PS4.isConnected()) {
     sendPS4();
   }
   teensy.send_data();
   // teensy.print();
+  timer_[2] = timer_main.read_ms();
+
+  Serial.print(" recieve : ");
+  Serial.print(timer_[0]);
+  Serial.print(" process : ");
+  Serial.print(timer_[1]);
   Serial.print(" send : ");
-  Serial.println(timer_main.read_ms());
+  Serial.print(timer_[2]);
   // Serial.println(PS4.isConnected());
 }
 

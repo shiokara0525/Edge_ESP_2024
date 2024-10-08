@@ -44,8 +44,11 @@ void loop() {
   timer_main.reset();
   neopixel_flag = 0;
   if(7 <= Serial2.available()){
+    Serial.print(" recieve ");
     recieveData();
   }
+  Serial.print(" recieve : ");
+  Serial.print(timer_main.read_ms());
 
 
   if(Mode == 0){
@@ -247,11 +250,16 @@ void loop() {
       Mode = 0;
     }
   }
+  Serial.print(" Mode : ");
+  Serial.print(timer_main.read_ms());
 
   if (PS4.isConnected()) {
     sendPS4();
   }
   teensy.send_data();
+  // teensy.print();
+  Serial.print(" send : ");
+  Serial.println(timer_main.read_ms());
   // Serial.println(PS4.isConnected());
 }
 
@@ -404,6 +412,7 @@ int recieveData(){
         OLED.cam_back_on = 0;
       }
     }
+    Serial.print(" recieve ");
 
     // Serial.println();
     return 1;

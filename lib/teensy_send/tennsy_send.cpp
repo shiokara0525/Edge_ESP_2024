@@ -46,6 +46,7 @@ int send_teensy::send_data(){
     for(int i = 0; i < count; i++){
         send_onedata(log[i].sort,log[i].send_data);
     }
+    return count;
 }
 
 
@@ -57,5 +58,6 @@ void send_teensy::print(){
         Serial.print(log[i].sort);
         Serial.print(" data : ");
         Serial.print(log[i].send_data);
+        Serial.println(" ");
     }
 }

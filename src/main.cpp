@@ -265,6 +265,7 @@ void loop() {
   Serial.print(timer_[1]);
   Serial.print(" send : ");
   Serial.print(timer_[2]);
+  Serial.println();
   // Serial.println(PS4.isConnected());
 }
 

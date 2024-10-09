@@ -158,7 +158,6 @@ void oled_attack::OLED(send_teensy &teensy) {
       Button_select = 0;  //ボタンの選択(next)をデフォルトにする
       B = A;
 
-      teensy.set_data(SEND_MODE,Robot_Mode);
       teensy.set_data(SEND_MAXSPEED,val_max);
       teensy.set_data(SEND_COLOR,goal_color);
       teensy.set_data(SEND_GETBALL_TH,ball_getth);

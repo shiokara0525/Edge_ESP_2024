@@ -45,7 +45,7 @@ void loop() {
   timer_main.reset();
   neopixel_flag = 0;
   if(7 <= Serial2.available()){
-    Serial.print(" recieve ");
+    // Serial.print(" recieve ");
     recieveData();
   }
   timer_[0] = timer_main.read_ms();
@@ -255,17 +255,18 @@ void loop() {
   if (PS4.isConnected()) {
     sendPS4();
   }
-  teensy.send_data();
+
   // teensy.print();
+  teensy.send_data();
   timer_[2] = timer_main.read_ms();
 
-  Serial.print(" recieve : ");
-  Serial.print(timer_[0]);
-  Serial.print(" process : ");
-  Serial.print(timer_[1]);
-  Serial.print(" send : ");
-  Serial.print(timer_[2]);
-  Serial.println();
+  // Serial.print(" recieve : ");
+  // Serial.print(timer_[0]);
+  // Serial.print(" process : ");
+  // Serial.print(timer_[1]);
+  // Serial.print(" send : ");
+  // Serial.print(timer_[2]);
+  // Serial.println();
   // Serial.println(PS4.isConnected());
 }
 
@@ -305,7 +306,6 @@ int recieveData(){
     // Serial.print(recieve_int[1]);
 
     if(recieve_byte[1] == 1){
-      teensy.set_data(SEND_MODE,OLED.Robot_Mode);
       teensy.set_data(SEND_MAXSPEED,OLED.val_max);
       teensy.set_data(SEND_COLOR,OLED.goal_color);
       teensy.set_data(SEND_GETBALL_TH,OLED.ball_getth);

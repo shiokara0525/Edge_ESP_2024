@@ -1,11 +1,11 @@
 #include<OLED_a.h>
 
-void oled_attack::setup(){
+void oled_attack::setup(send_teensy &teensy){
   EEPROM.begin(512);
 
   address = 0;
   EEPROM.get(address,LINE_level);//EEPROMから読み出し
-  sendtoTeensy("LINE_level",LINE_level);
+  teensy.set_data(SEND_LINE_TH,LINE_level);
   addresses[EEPROM_LINE] = address;
 
   address += sizeof(LINE_level);  //アドレスを次の変数のアドレスにする
@@ -14,7 +14,7 @@ void oled_attack::setup(){
 
   address += sizeof(RA_size);  //アドレスを次の変数のアドレスにする
   EEPROM.get(address,val_max);//EEPROMから読み出し(前回取り出した変数からアドレスを取得し、次のアドレスをここで入力する)
-  sendtoTeensy("val_max",val_max);
+  teensy.set_data(SEND_MAXSPEED,val_max);
   addresses[EEPROM_VAL] = address;
 
   address += sizeof(val_max);  //アドレスを次の変数のアドレスにする
@@ -28,15 +28,15 @@ void oled_attack::setup(){
     EEPROM.get(address,check_val[i]);//EEPROMから読み出し(前回取り出した変数からアドレスを取得し、次のアドレスをここで入力する)
     address += sizeof(check_val[i]);  //アドレスを次の変数のアドレスにする
   }
-  sendtoTeensy("CHECK",DEF_NUM);
+  teensy.set_data(SEND_CHECKNUM,check_val);
 
   EEPROM.get(address,ball_getth);
-  sendtoTeensy("ball_th",ball_getth);
+  teensy.set_data(SEND_GETBALL_TH,ball_getth);
   addresses[EEPROM_BALL] = address;
 
   address += sizeof(ball_getth);
   EEPROM.get(address,Robot_Mode);
-  // sendtoTeensy("Mode",Robot_Mode);
+  // teensy.set_data(SEND_MODE,Robot_Mode);
   addresses[EEPROM_MODE] = address;
 
   Serial.print(" address : ");
@@ -54,7 +54,7 @@ void oled_attack::setup(){
   //   }
   // }
   if(LINE_level == 0){
-    LINE_level = 50;
+    LINE_level = 30;
   }
   EEPROM.commit();
 
@@ -132,7 +132,7 @@ void oled_attack::end(){
 
 
 
-void oled_attack::OLED() {
+void oled_attack::OLED(send_teensy &teensy) {
   if(timer_OLED.read_ms() > 500){
     if(flash_OLED == 0){
       flash_OLED = 1;
@@ -157,19 +157,19 @@ void oled_attack::OLED() {
     if(A != B){  //ステートが変わったときのみ実行(初期化)
       Button_select = 0;  //ボタンの選択(next)をデフォルトにする
       B = A;
-      sendtoTeensy("Mode",DEF_NUM);
-      sendtoTeensy("val_max",DEF_NUM);
-      sendtoTeensy("color",DEF_NUM);
-      sendtoTeensy("ball_th",DEF_NUM);
-      sendtoTeensy("LINE_level",DEF_NUM);
-      sendtoTeensy("CHECK",DEF_NUM);
+
+      teensy.set_data(SEND_MAXSPEED,val_max);
+      teensy.set_data(SEND_COLOR,goal_color);
+      teensy.set_data(SEND_GETBALL_TH,ball_getth);
+      teensy.set_data(SEND_LINE_TH,LINE_level);
+      teensy.set_data(SEND_CHECKNUM,check_val);
     }
 
     display_start();
     if(Sentor){
       if(Button_select == 0){
         ac_reset = 1;
-        sendtoTeensy("ac_reset",1);
+        teensy.set_data(SEND_ACRESET,1);
         A = 12;  //コート方向判定
       }
       else if(Button_select == 1){
@@ -199,12 +199,12 @@ void oled_attack::OLED() {
     if(Sentor){  //タクトスイッチが手から離れたら
       if(Button_selectCF == 0){
         goal_color = YELLOW;
-        sendtoTeensy("color",YELLOW);
+        teensy.set_data(SEND_COLOR,YELLOW);
         A = 15;  //スタート画面に行く
       }
       else if(Button_selectCF == 2){
         goal_color = BLUE;
-        sendtoTeensy("color",BLUE);
+        teensy.set_data(SEND_COLOR,BLUE);
         A = 15;  //スタート画面に行く
       }
       else if(Button_selectCF == 1){
@@ -221,14 +221,14 @@ void oled_attack::OLED() {
     }
 
     display_waitStart();
-    sendtoTeensy("state",15);
+    teensy.set_data(SEND_STATE,15);
     if(Sentor){  //タクトスイッチが手から離れたら
       if(Button_select == 0){
         A = 0;  //メニュー画面に戻る
       }
       else if(Button_select == 1){
         ac_reset = 1;
-        sendtoTeensy("ac_reset",1);  //姿勢制御の値リセットするぜい
+        teensy.set_data(SEND_ACRESET,1);  //姿勢制御の値リセットするぜい
       }
       else if(Button_select == 2){
         A = 16;
@@ -287,11 +287,11 @@ void oled_attack::OLED() {
         if(option_flag == i){
           if(option_on[i] == 0){
             option_on[i] = 1;
-            sendtoTeensy("NONE_MOTOR",1);
+            teensy.set_data(SEND_STOPMOTOR,1);
           }
           else{
             option_on[i] = 0;
-            sendtoTeensy("NONE_MOTOR",0);
+            teensy.set_data(SEND_STOPMOTOR,0);
           }
         }
       }
@@ -309,7 +309,7 @@ void oled_attack::OLED() {
       // LINE_level = 700;  //初めにデータをセットしておかなければならない
       EEPROM.put(addresses[EEPROM_LINE], LINE_level);  //EEPROMにラインの閾値を保存
       EEPROM.commit();
-      sendtoTeensy("LINE_level",LINE_level);
+      teensy.set_data(SEND_LINE_TH,LINE_level);
 
       A = 0;  //メニュー画面へ戻る
     }
@@ -320,7 +320,7 @@ void oled_attack::OLED() {
       Button_select = 0;  //ボタンの選択(next)をデフォルトにする
       B = A;
     }
-    sendtoTeensy("state",30);
+    teensy.set_data(SEND_STATE,30);
     display_Line();
     if(Sentor){
       A = 0;
@@ -336,7 +336,7 @@ void oled_attack::OLED() {
     if(Sentor){  //タクトスイッチが手から離れたら
       EEPROM.put(addresses[EEPROM_BALL], ball_getth);  //EEPROMにラインの閾値を保存
       EEPROM.commit();
-      sendtoTeensy("ball_th",ball_getth);
+      teensy.set_data(SEND_GETBALL_TH,ball_getth);
       A = 0;  //メニュー画面へ戻る
     }
   }
@@ -346,7 +346,7 @@ void oled_attack::OLED() {
       Button_select = 0;  //ボタンの選択(next)をデフォルトにする
       B = A;
     }
-    sendtoTeensy("state",50);
+    teensy.set_data(SEND_STATE,50);
     display_Ball();
     if(Sentor){
       A = 0;
@@ -361,7 +361,7 @@ void oled_attack::OLED() {
     if(Sentor){  //タクトスイッチが手から離れたら
       EEPROM.put(addresses[EEPROM_VAL], val_max);  //EEPROMにボールの閾値を保存
       EEPROM.commit();
-      sendtoTeensy("val_max",val_max);
+      teensy.set_data(SEND_MAXSPEED,val_max);
       A = 0;  //メニュー画面へ戻る
     }
   }
@@ -387,7 +387,7 @@ void oled_attack::OLED() {
         }
         EEPROM.commit();
         Serial.println();
-        sendtoTeensy("CHECK",DEF_NUM);
+        teensy.set_data(SEND_CHECKNUM,check_val);
       }
       else{
         check_flag = 0;
@@ -399,7 +399,7 @@ void oled_attack::OLED() {
       Button_select = 0;  //ボタンの選択(next)をデフォルトにする
       B = A;
     }
-    sendtoTeensy("state",80);
+    teensy.set_data(SEND_STATE,80);
     display_Cam();
     if(Sentor){
       A = 0;
@@ -411,7 +411,8 @@ void oled_attack::OLED() {
       B = A;
     }
     display_getBall();
-    sendtoTeensy("state",90);
+    teensy.set_data(SEND_STATE,90);
+
     if(Sentor){
       A = 0;
     }
@@ -427,7 +428,7 @@ void oled_attack::OLED() {
     if(digitalRead(Toggle_Switch) != toogle){
       toogle = digitalRead(Toggle_Switch);
       kick_ = 1;
-      sendtoTeensy("kick",kick_);
+      teensy.set_data(SEND_KICK,1);
     }
 
     if(Sentor){

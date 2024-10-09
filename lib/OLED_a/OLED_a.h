@@ -7,8 +7,8 @@
 #include <timer.h>
 #include<Arduino.h>
 #include<myVector.h>
+#include<teensy_send.h>
 
-extern int sendtoTeensy(const char*,int);
 extern Adafruit_NeoPixel pixels;
 
 #define NUMPIXELS 16
@@ -54,8 +54,8 @@ class oled_attack{
 
     char CHECK_str [6][8] = {"CHECK_0","CHECK_1","CHECK_2","CHECK_3","CHECK_4","CHECK_5"};
 
-    void setup();
-    void OLED();
+    void setup(send_teensy &teensy);
+    void OLED(send_teensy &teensy);
     void start();
     void end();
     int first_select();

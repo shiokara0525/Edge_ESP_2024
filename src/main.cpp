@@ -3,6 +3,7 @@
 #include <PS4Controller.h>
 #include<OLED_a.h>
 #include<timer.h>
+#include<teensy_send.h>
 
 #define DEF_NUM 3838
 
@@ -10,13 +11,13 @@ oled_attack OLED;
 BluetoothSerial BTSerial;
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
+send_teensy teensy;
 timer timer_main;
 int timer_[3];
 
 int Mode = 0;
 int Mode_old = 999;
 
-int sendtoTeensy(const char*,int); //消すよ
 
 int recieveData();
 
@@ -31,11 +32,11 @@ int sendPS4();
 void setup() {
   delay(1000);
   Serial.begin(9600);
-  Serial2.begin(115200);
+  teensy.setup();
   // BTSerial.begin("ESP32");
   PS4.begin("A0:A3:B3:2D:17:06");
   Serial.println("Ready.");
-  OLED.setup();
+  OLED.setup(teensy);
   Mode = 99;
   pinMode(35,INPUT);
 }
@@ -44,6 +45,7 @@ void loop() {
   timer_main.reset();
   neopixel_flag = 0;
   if(7 <= Serial2.available()){
+    // Serial.print(" recieve ");
     recieveData();
   }
   timer_[0] = timer_main.read_ms();
@@ -52,13 +54,13 @@ void loop() {
   if(Mode == 0){
     if(Mode != Mode_old){
       Mode_old = Mode;
-      sendtoTeensy("Mode",0);
+      teensy.set_data(SEND_MODE,0);
       OLED.start();
       pixels.clear();
       pixels.show();
     }
 
-    OLED.OLED();
+    OLED.OLED(teensy);
 
     if(OLED.end_flag == 1){
       if(OLED.Robot_Mode == 0){
@@ -76,12 +78,12 @@ void loop() {
   if(Mode == 1){
     if(Mode != Mode_old){
       Mode_old = Mode;
-      sendtoTeensy("SETPLAY",DEF_NUM);
-      sendtoTeensy("Mode",1);
+      teensy.set_data(SEND_SETPLAY_FLAG,OLED.setplay_flag);
+      teensy.set_data(SEND_MODE,1);
       pixels.clear();
       pixels.show();
     }
-    sendtoTeensy("A_NEO",DEF_NUM);
+    teensy.set_data(SEND_A_NEO,0);
     OLED.OLED_moving();
 
     pixels.clear();
@@ -149,12 +151,12 @@ void loop() {
   else if(Mode == 2){
     if(Mode != Mode_old){
       Mode_old = Mode;
-      sendtoTeensy("Mode",2);
+      teensy.set_data(SEND_MODE,2);
       pixels.clear();
       pixels.show();
     }
     OLED.OLED_moving();
-    sendtoTeensy("D_neo",999);
+    teensy.set_data(SEND_D_NEO,0);
     if(OLED.option_on[3]){
       if(neopixel_flag){
         pixels.clear();
@@ -215,8 +217,8 @@ void loop() {
   else if(Mode == 3){
     if(Mode != Mode_old){
       Mode_old = Mode;
-      sendtoTeensy("Mode",3);
-      sendtoTeensy("TEST",OLED.testMode);
+      teensy.set_data(SEND_MODE,3);
+      teensy.set_data(SEND_TESTFLAG,OLED.testMode);
     }
     if(digitalRead(OLED.Tact_Switch[1]) == LOW){
       Mode = 0;
@@ -225,7 +227,7 @@ void loop() {
   else if(Mode == 10){
     if(Mode != Mode_old){
       Mode_old = Mode;
-      sendtoTeensy("Mode",10);
+      teensy.set_data(SEND_MODE,10);
     }
     if(digitalRead(OLED.Bluetooth_pin) == HIGH){
       if(OLED.Robot_Mode == 0){
@@ -242,7 +244,7 @@ void loop() {
   else if(Mode == 99){
     if(Mode != Mode_old){
       Mode_old = Mode;
-      sendtoTeensy("Mode",99);
+      teensy.set_data(SEND_MODE,99);
     }
     if(OLED.first_select()){
       Mode = 0;
@@ -254,133 +256,20 @@ void loop() {
     sendPS4();
   }
 
-  Serial.print(" recieve : ");
-  Serial.print(timer_[0]);
-  Serial.print(" process : ");
-  Serial.print(timer_[1]);
-  Serial.print(" send : ");
-  Serial.print(timer_[2]);
-  Serial.println();
+  // teensy.print();
+  teensy.send_data();
+  timer_[2] = timer_main.read_ms();
+
+  // Serial.print(" recieve : ");
+  // Serial.print(timer_[0]);
+  // Serial.print(" process : ");
+  // Serial.print(timer_[1]);
+  // Serial.print(" send : ");
+  // Serial.print(timer_[2]);
+  // Serial.println();
   // Serial.println(PS4.isConnected());
 }
 
-
-int sendtoTeensy(const char *message,int val){
-  int send;
-  int flag = 0;
-  byte send_2[2];
-
-  if(message == "Mode"){
-    send = Mode;
-    flag = 1;
-  }
-  else if(message == "state"){
-    send = OLED.state;
-    flag = 2;
-  }
-  else if(message == "val_max"){
-    send = OLED.val_max;
-    flag = 3;
-  }
-  else if(message == "color"){
-    send = OLED.goal_color;
-    flag = 4;
-  }
-  else if(message == "ball_th"){
-    send = OLED.ball_getth;
-    flag = 5;
-  }
-  else if(message == "Mnone_flag"){
-    send = OLED.Mnone_flag;
-    flag = 6;
-  }
-  else if(message == "ac_reset"){
-    send = OLED.ac_reset;
-    flag = 7;
-  }
-  else if(message == "kick"){
-    send = OLED.kick_flag;
-    flag = 8;
-  }
-  else if(message == "PS4"){
-    flag = 9;
-  }
-  else if(message == "LINE_level"){
-    send = OLED.LINE_level;
-    flag = 10;
-  }
-  else if(message == "PS4_R"){
-    flag = 11;
-  }
-  else if(message == "CHECK"){
-    flag = 100;
-  }
-  else if(message == "D_neo"){
-    flag = 13;
-  }
-  else if(message == "TEST"){
-    flag = 14;
-    send = OLED.testMode;
-  }
-  else if(message == "OPTION"){
-    flag = 15;
-    send = OLED.setplay_flag;
-  }
-  else if(message == "A_NEO"){
-    flag = 16;
-  }
-  else if(message == "SETPLAY"){
-    flag = 17;
-    send = OLED.setplay_flag;
-  }
-  else if(message == "PS4_Circle"){
-    flag = 18;
-    send = 1;
-  }
-  else if(message == "PS4_Square"){
-    flag = 19;
-    send = 1;
-  }
-  else if(message == "NONE_MOTOR"){
-    flag = 20;
-    send = OLED.option_on[0];
-  }
-
-  // Serial.print(" message : ");
-  // Serial.print(message);
-  // Serial.print(" flag : ");
-  // Serial.print(flag);
-  // Serial.print(" ");
-  // Serial.println();
-
-  if(val != DEF_NUM){
-    send = val;
-  }
-
-  if(flag != 100){
-    uint8_t send_byte[5] = {38,0,0,0,37};
-    send_byte[1] = flag;
-    send_byte[2] = byte( send >> 8 ); //ビットシフトで上位側の８Bitを取り出し、バイト型に型変換をする。
-    send_byte[3] = byte( send & 0xFF ); //論理和で下位側の８Bitを取り出し、バイト型に型変換をする。
-    Serial2.write(send_byte,5);
-  }
-  else if(flag == 15){
-    uint8_t send_byte[5] = {38,0,0,0,37};
-    Serial2.write(send_byte,5);
-  }
-  else{
-    for(int i = 0; i < 6; i++){
-      send = OLED.check_val[i];
-      uint8_t send_byte[5] = {38,0,0,0,37};
-      send_byte[1] = flag + i;
-      send_byte[2] = byte( send >> 8 ); //ビットシフトで上位側の８Bitを取り出し、バイト型に型変換をする。
-      send_byte[3] = byte( send & 0xFF ); //論理和で下位側の８Bitを取り出し、バイト型に型変換をする。
-      Serial2.write(send_byte,5);
-    }
-  }
-
-  return 1;
-}
 
 
 int recieveData(){
@@ -417,12 +306,11 @@ int recieveData(){
     // Serial.print(recieve_int[1]);
 
     if(recieve_byte[1] == 1){
-      sendtoTeensy("Mode",DEF_NUM);
-      sendtoTeensy("val_max",DEF_NUM);
-      sendtoTeensy("color",DEF_NUM);
-      sendtoTeensy("ball_th",DEF_NUM);
-      sendtoTeensy("LINE_level",DEF_NUM);
-      sendtoTeensy("CHECK",DEF_NUM);
+      teensy.set_data(SEND_MAXSPEED,OLED.val_max);
+      teensy.set_data(SEND_COLOR,OLED.goal_color);
+      teensy.set_data(SEND_GETBALL_TH,OLED.ball_getth);
+      teensy.set_data(SEND_LINE_TH,OLED.LINE_level);
+      teensy.set_data(SEND_CHECKNUM,OLED.check_val);
     }
     else if(recieve_byte[1] == 2){
       OLED.ball_vec.set_coodinate(recieve_int[0],recieve_int[1]);
@@ -530,6 +418,7 @@ int recieveData(){
         OLED.cam_back_on = 0;
       }
     }
+    Serial.print(" recieve ");
 
     // Serial.println();
     return 1;
@@ -549,18 +438,18 @@ int sendPS4(){
   contain[0] = uint16_t(y + 128) << 8;
   contain[1] = uint16_t(x + 128);
   send_int = (contain[0] | contain[1]);
-  sendtoTeensy("PS4",send_int);
+  teensy.set_data(SEND_PS4,send_int);
   y = PS4.RStickX();
   x = PS4.RStickY();
   contain[0] = uint16_t(y + 128) << 8;
   contain[1] = uint16_t(x + 128);
   send_int = contain[0] | contain[1];
-  sendtoTeensy("PS4_R",send_int);
+  teensy.set_data(SEND_PS4_R,send_int);
   if(PS4.Circle()){
-    sendtoTeensy("PS4_Circle",1);
+    teensy.set_data(SEND_PS4_CIRCLE,send_int);
   }
   if(PS4.Square()){
-    sendtoTeensy("PS4_Square",1);
+    teensy.set_data(SEND_PS4_SQUARE,send_int);
   }
   return 1;
 }

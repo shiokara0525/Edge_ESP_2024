@@ -11,7 +11,7 @@ oled_attack OLED;
 BluetoothSerial BTSerial;
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-send_teensy teensy;
+send_teensy teensy;  //バッファ的な
 timer timer_main;
 int timer_[3];
 

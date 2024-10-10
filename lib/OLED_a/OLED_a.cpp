@@ -1779,18 +1779,15 @@ void oled_attack::display_Cam(){
 
 
   //ボールの位置状況マップを表示する
-  display.drawCircle(32, 32, 30, WHITE);  //○ 30
-  display.drawCircle(32, 32, 20, WHITE);  //○ 20
-  display.drawCircle(32, 32, 10, WHITE);  //○ 10
   display.drawLine(2, 12, 62, 12, WHITE); //-
   display.drawLine(2, 52, 62, 52, WHITE); //|
-  display.drawLine(2, 22, 2, 52, WHITE); //|
+  display.drawLine(2, 12, 2, 52, WHITE); //|
   display.drawLine(62, 12, 62, 52, WHITE); //|
 
   if(cam_is_front == 1){
     display.drawRect(2 + (cam_front_x1 / 2),12 + (cam_front_y1 / 2),cam_front_w / 2,cam_front_h / 2,WHITE);
 
-    display.setTextSize(2);
+    display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(68,0);
     display.println("Cam_front");
@@ -1798,14 +1795,17 @@ void oled_attack::display_Cam(){
   else{
     display.drawRect(2 + (cam_back_x1 / 2),12 + (cam_back_y1 / 2),cam_back_w / 2,cam_back_h / 2,WHITE);
 
-    display.setTextSize(2);
+    display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(68,0);
     display.println("Cam_back");
   }
 
+  Serial.print(" cam_front_ang : ");
+  Serial.println(cam_front_ang);
 
 
+  display.setTextSize(1);
   if(cam_is_front == 1){
     display.setCursor(68,24);
     display.println("Dir:");
@@ -1861,8 +1861,6 @@ void oled_attack::display_Cam(){
     if(ball_pos < 0){
       ball_pos += 16;
     }
-    Serial.print(" b_p : ");
-    Serial.print(ball_pos);
     if(goal_color == BLUE){
       pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
     }
@@ -1876,13 +1874,22 @@ void oled_attack::display_Cam(){
     if(ball_pos < 0){
       ball_pos += 16;
     }
-    Serial.print(" b_p : ");
-    Serial.print(ball_pos);
     if(goal_color == BLUE){
       pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
     }
     else if(goal_color == YELLOW){
       pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+    }
+  }
+
+  if(cam_is_front == 0){
+    if(Left == 1 || Right == 1){
+      cam_is_front = 1;
+    }
+  }
+  else{
+    if(Left == 1 || Right == 1){
+      cam_is_front = 0;
     }
   }
 

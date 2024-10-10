@@ -424,6 +424,7 @@ int recieveData(){
         OLED.cam_on = 1;
         OLED.cam_front_ang = recieve_int[0] - 40;
         OLED.cam_front_size = recieve_int[1];
+        Serial.print(" recieve ");
       }
     }
     else if(recieve_byte[1] == 5){

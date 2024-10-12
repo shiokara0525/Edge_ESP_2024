@@ -1783,27 +1783,18 @@ void oled_attack::display_Cam(){
   // display.drawLine(2, 52, 62, 52, WHITE); //|
   // display.drawLine(2, 12, 2, 52, WHITE); //|
   // display.drawLine(62, 12, 62, 52, WHITE); //|
-  display.drawRect(2,12,60,40,WHITE);
+  display.drawRect(2,12,60,45,WHITE);
 
   if(cam_is_front == 1){
-    display.drawRect(2 + (cam_front_x1 / 2),12 + (cam_front_y1 / 4),cam_front_w / 2,cam_front_h / 4,WHITE);
+    display.drawRect(2 + (cam_front_x1 * 0.375),12 + (cam_front_y1 * 0.1875),cam_front_w * 0.375,cam_front_h * 0.1875,WHITE);
 
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(68,0);
     display.println("Cam_front");
-    Serial.print(" x : ");
-    Serial.print(2 + (cam_front_x1 / 2));
-    Serial.print(" y : ");
-    Serial.print(12 + (cam_front_y1 / 2));
-    Serial.print(" w : ");
-    Serial.print(cam_front_w / 2);
-    Serial.print(" h : ");
-    Serial.print(cam_front_h / 2);
-    Serial.println();
   }
   else{
-    display.drawRect(2 + (cam_back_x1 / 2),12 + (cam_back_y1 / 2),cam_back_w / 2,cam_back_h / 2,WHITE);
+    display.drawRect(2 + (cam_back_x1 * 0.375),12 + (cam_back_y1 * 0.1875),cam_back_w * 0.375,cam_back_h * 0.1875,WHITE);
 
     display.setTextSize(1);
     display.setTextColor(WHITE);

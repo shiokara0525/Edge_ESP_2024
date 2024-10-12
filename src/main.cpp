@@ -522,6 +522,12 @@ int recieveData(){
       OLED.cam_front_y1 = recieve_byte[3];
       OLED.cam_front_w = recieve_byte[4];
       OLED.cam_front_h = recieve_byte[5];
+      Serial.print(" cam_front ");
+      for(int i = 0; i < 4; i++){
+        Serial.print(recieve_byte[i + 2]);
+        Serial.print(" ");
+      }
+      Serial.println();
     }
     else if(recieve_byte[1] == 13){
       OLED.cam_back_x1 = recieve_byte[2];

@@ -1832,7 +1832,7 @@ void oled_attack::display_Cam(){
   else{
     display.setCursor(68,24);
     display.println("Dir:");
-    if(cam_on){  //ボールがあれば値を表示
+    if(1){  //ボールがあれば値を表示
       display.setCursor(96,24);
       display.println(int(cam_back_ang));
     }
@@ -1842,7 +1842,7 @@ void oled_attack::display_Cam(){
 
     display.setCursor(68,38);
     display.println("Size:");
-    if(cam_on){  //ボールがあれば値を表示
+    if(1){  //ボールがあれば値を表示
       display.setCursor(96,38);
       display.println(int(cam_back_size));
     }

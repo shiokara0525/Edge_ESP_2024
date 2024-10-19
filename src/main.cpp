@@ -89,7 +89,14 @@ void loop() {
     pixels.clear();
     if(OLED.option_on[3]){
       if(A_A == 10){
-        pixels.setPixelColor(4,pixels.Color(0,0,200));
+        for(int i = 0; i < 15; i++){
+          for(int j = 0; j <= i; j++){
+            pixels.setPixelColor(j,pixels.Color(100,0,0));
+          }
+          if(OLED.ang_vel < 7 * i){
+            break;
+          }
+        }
       }
       else if(A_A == 12){
         pixels.setPixelColor(4,pixels.Color(0,200,0));
@@ -325,7 +332,9 @@ int recieveData(){
       }
       else{
         OLED.cam_on = 1;
-        OLED.cam_vec.set_polar((recieve_int[0] - 40),recieve_int[1]);
+        OLED.cam_front_ang = recieve_int[0] - 40;
+        OLED.cam_front_size = recieve_int[1];
+        Serial.print(" recieve ");
       }
     }
     else if(recieve_byte[1] == 5){
@@ -350,9 +359,12 @@ int recieveData(){
       }
       else{
         OLED.cam_back_on = 1;
-        OLED.cam_back_vec.set_polar(recieve_int[0],recieve_int[1]);
+        OLED.cam_back_ang = recieve_int[0] - 40;
+        OLED.cam_back_size = recieve_int[1];
       }
-      // OLED.cam_back_vec.print();
+      // Serial.print(" cam_back_!! ");
+      // Serial.print(" ang : ");
+      // Serial.print(OLED.cam_back_ang);
     }
     else if(recieve_byte[1] == 9){
       OLED.line_on = 1;
@@ -417,6 +429,31 @@ int recieveData(){
         OLED.cam_on = 0;
         OLED.cam_back_on = 0;
       }
+      OLED.ang_vel = recieve_byte[5];
+    }
+    else if(recieve_byte[1] == 12){
+      OLED.cam_front_x1 = recieve_byte[2];
+      OLED.cam_front_y1 = recieve_byte[3];
+      OLED.cam_front_w = recieve_byte[4];
+      OLED.cam_front_h = recieve_byte[5];
+      // Serial.print(" cam_front ");
+      // for(int i = 0; i < 4; i++){
+      //   Serial.print(recieve_byte[i + 2]);
+      //   Serial.print(" ");
+      // }
+      // Serial.println();
+    }
+    else if(recieve_byte[1] == 13){
+      OLED.cam_back_x1 = recieve_byte[2];
+      OLED.cam_back_y1 = recieve_byte[3];
+      OLED.cam_back_w = recieve_byte[4];
+      OLED.cam_back_h = recieve_byte[5];
+      // Serial.print(" cam_back ");
+      // for(int i = 0; i < 4; i++){
+      //   Serial.print(recieve_byte[i + 2]);
+      //   Serial.print(" ");
+      // }
+      // Serial.println();
     }
     Serial.print(" recieve ");
 

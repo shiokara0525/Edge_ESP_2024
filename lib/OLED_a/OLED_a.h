@@ -131,6 +131,8 @@ class oled_attack{
     int ac_reset = 0;
     int kick_flag = 0;
 
+    int ang_vel;
+
     int LINE_level_check;
 
     int setplay_flag = 0;
@@ -146,6 +148,13 @@ class oled_attack{
 
     int cam_on = 0;
     int cam_back_on = 0;
+
+    int cam_front_x1,cam_front_y1,cam_front_w,cam_front_h;
+    int cam_back_x1,cam_back_y1,cam_back_w,cam_back_h;
+    int cam_is_front = 1;
+
+    int cam_front_ang,cam_back_ang;
+    int cam_front_size,cam_back_size;
 
 
     Vector2D line_vec;

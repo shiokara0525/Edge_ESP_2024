@@ -1780,67 +1780,91 @@ void oled_attack::display_Cam(){
   display.display();
   display.clearDisplay();
 
-  //ボールの座標をOLED用にする（無理やりint型にしてOLEDのドットに合わせる）
-  int OLED_cam_x = map((80 - cam_vec.return_magnitude()) * sin(radians(cam_vec.return_azimuth())), -80, 80, 0, 60);  //
-  int OLED_cam_y = map((80 - cam_vec.return_magnitude()) * cos(radians(cam_vec.return_azimuth())), -80, 80, 0, 60);  //
 
   //ボールの位置状況マップを表示する
-  display.drawCircle(32, 32, 30, WHITE);  //○ 30
-  display.drawCircle(32, 32, 20, WHITE);  //○ 20
-  display.drawCircle(32, 32, 10, WHITE);  //○ 10
-  display.drawLine(2, 32, 62, 32, WHITE); //-
-  display.drawLine(32, 2, 32, 62, WHITE); //|
+  // display.drawLine(2, 12, 62, 12, WHITE); //-
+  // display.drawLine(2, 52, 62, 52, WHITE); //|
+  // display.drawLine(2, 12, 2, 52, WHITE); //|
+  // display.drawLine(62, 12, 62, 52, WHITE); //|
+  display.drawRect(2,12,60,45,WHITE);
 
-  //ボールの位置を表示する
-  if(1)  //ボールがあれば
-  {
-    display.fillCircle((OLED_cam_x + 2), (62 - OLED_cam_y), 5, WHITE);
+  if(cam_is_front == 1){
+    display.drawRect(2 + (cam_front_x1 * 0.375),12 + (cam_front_y1 * 0.1875),cam_front_w * 0.375,cam_front_h * 0.1875,WHITE);
+
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(68,0);
+    display.println("Cam_front");
   }
-  Serial.print(" color : ");
-  Serial.print(goal_color);
+  else{
+    display.drawRect(2 + (cam_back_x1 * 0.375),12 + (cam_back_y1 * 0.1875),cam_back_w * 0.375,cam_back_h * 0.1875,WHITE);
 
-  //"Ball"と表示する
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(68,0);
-  display.println("Cam");
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(68,0);
+    display.println("Cam_back");
+  }
+
+  // Serial.print(" cam_front_ang : ");
+  // Serial.println(cam_front_ang);
+
+
+  display.setTextSize(1);
+  if(cam_is_front == 1){
+    display.setCursor(68,24);
+    display.println("Dir:");
+    if(cam_on){  //ボールがあれば値を表示
+      display.setCursor(96,24);
+      display.println(int(cam_front_ang));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 24, 34, 10, WHITE);
+    }
+
+    //ボールの距離を表示する
+    display.setCursor(68,38);
+    display.println("Size:");
+    if(cam_on){  //ボールがあれば値を表示
+      display.setCursor(96,38);
+      display.println(int(cam_front_size));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 38, 34, 10, WHITE);
+    }
+  }
+  else{
+    display.setCursor(68,24);
+    display.println("Dir:");
+    if(1){  //ボールがあれば値を表示
+      display.setCursor(96,24);
+      display.println(int(cam_back_ang));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 24, 34, 10, WHITE);
+    }
+
+    display.setCursor(68,38);
+    display.println("Size:");
+    if(1){  //ボールがあれば値を表示
+      display.setCursor(96,38);
+      display.println(int(cam_back_size));
+    }
+    else{  //ボールがなければ白い四角形を表示
+      display.fillRect(96, 38, 34, 10, WHITE);
+    }
+  }
 
   //ここから下のコードのテキストをsize1にする
   display.setTextSize(1);
   display.setTextColor(WHITE);
 
-  //ボールの角度を表示する
-  display.setCursor(68,24);
-  display.println("Dir:");
-  if(cam_on){  //ボールがあれば値を表示
-    display.setCursor(96,24);
-    display.println(int(cam_vec.return_azimuth()));
-  }
-  else{  //ボールがなければ白い四角形を表示
-    display.fillRect(96, 24, 34, 10, WHITE);
-  }
-
-  //ボールの距離を表示する
-  display.setCursor(68,38);
-  display.println("Size:");
-  if(cam_on){  //ボールがあれば値を表示
-    display.setCursor(96,38);
-    display.println(int(cam_vec.return_magnitude()));
-  }
-  else{  //ボールがなければ白い四角形を表示
-    display.fillRect(96, 38, 34, 10, WHITE);
-  }
-
-
   pixels.clear();
   if(cam_on){
     int ball_pos = 0;
-    ball_pos = ((cam_vec.return_azimuth()) + 180) / 22.5 - 4;
+    ball_pos = (cam_front_ang + 180) / 22.5 - 4;
     if(ball_pos < 0){
       ball_pos += 16;
     }
-    Serial.print(" b_p : ");
-    Serial.print(ball_pos);
     if(goal_color == BLUE){
       pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
     }
@@ -1850,17 +1874,26 @@ void oled_attack::display_Cam(){
   }
   if(cam_back_on){
     int ball_pos = 0;
-    ball_pos = -(cam_back_vec.return_azimuth()) / 22.5 + 12;
+    ball_pos = -(cam_back_ang / 22.5) + 12;
     if(ball_pos < 0){
       ball_pos += 16;
     }
-    Serial.print(" b_p : ");
-    Serial.print(ball_pos);
     if(goal_color == BLUE){
       pixels.setPixelColor(ball_pos,pixels.Color(100,100,0));
     }
     else if(goal_color == YELLOW){
       pixels.setPixelColor(ball_pos,pixels.Color(0,0,100));
+    }
+  }
+
+  if(cam_is_front == 0){
+    if(Left == 1 || Right == 1){
+      cam_is_front = 1;
+    }
+  }
+  else{
+    if(Left == 1 || Right == 1){
+      cam_is_front = 0;
     }
   }
 

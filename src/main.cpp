@@ -91,9 +91,14 @@ void loop() {
       if(A_A == 10){
         for(int i = 0; i < 15; i++){
           for(int j = 0; j <= i; j++){
-            pixels.setPixelColor(j,pixels.Color(100,0,0));
+            if(OLED.ang_vel < 90){
+              pixels.setPixelColor(j,pixels.Color(100,0,0));
+            }
+            else{
+              pixels.setPixelColor(j,pixels.Color(100,100,0));
+            }
           }
-          if(OLED.ang_vel < 7 * i){
+          if(OLED.ang_vel < 10 * i){
             break;
           }
         }

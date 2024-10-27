@@ -1672,7 +1672,7 @@ void oled_attack::set_Avaliable(){
   }
 
   display.setCursor(0,10);  //2列目
-  display.println("ang_20");  //この中に変数名を入力
+  display.println("neo_th");  //この中に変数名を入力
   display.setCursor(60,10);
   display.setTextColor(WHITE);
   display.println(":");    //この中に知りたい変数を入力
